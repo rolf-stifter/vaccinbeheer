@@ -7,25 +7,25 @@
     <thead>
         <tr>
             <th>In gebruik</th>
-            <th>Product Naam</th>
+            <th>Product naam</th>
             <th>Aantal</th>
             <th>Aantal na vaccinaties</th>
         </tr>
     </thead>
 
     <tbody>
-        <tr>
-            <td>&#10004;</td>
-            <td>Product 1</td>
-            <td>5</td>
-            <td>2</td>
-        </tr>
-        <tr>
-            <td>&#10060;</td>
-            <td>Product 2</td>
-            <td>10</td>
-            <td>3</td>
-        </tr>
+            @foreach($stock_lines as $stock_line)
+            <tr>
+                @if($stock_line->isUsed == 1)
+                    <td>&#10004;</td>
+                @else
+                    <td>&#10060;</td>
+                @endif
+                <td>{{ $stock_line->productName}}</td>
+                <td>{{ $stock_line->quantity}}</td>
+                <td>{{ $stock_line->quantityAfterVac}}</td>
+            </tr>
+            @endforeach
     </tbody>
     </table>
 

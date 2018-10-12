@@ -19,4 +19,4 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/stock', 'StockController@index');
+Route::get('/stock', 'StockController@index')->middleware('auth');
