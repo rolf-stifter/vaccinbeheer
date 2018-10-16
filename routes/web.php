@@ -20,3 +20,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/stock', 'StockController@index')->middleware('auth');
+
+//routes for Requests controller
+Route::resource('requests', 'RequestsController')->middleware('auth');
+Route::get('/requests/edit/{id}', 'requestsController@edit')->middleware('auth');
+Route::get('/requests/destroy/{id}', 'requestsController@destroy')->middleware('auth')->name('customdestroy');

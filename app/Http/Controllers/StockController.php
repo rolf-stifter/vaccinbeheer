@@ -14,8 +14,6 @@ class StockController extends Controller
     public function index()
     {
 
-        $this->middleware('auth');
-        
         $stock_lines = DB::table('stock')->get();
 
         return view('stock/index', compact('stock_lines'));
