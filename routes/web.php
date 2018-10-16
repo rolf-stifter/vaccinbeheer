@@ -19,9 +19,13 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/stock', 'StockController@index')->middleware('auth');
+//routes for Stock controller
+Route::resource('stock', 'StockController')->middleware('auth');
+Route::get('/stock/edit/{id}', 'StockController@edit')->middleware('auth');
+Route::get('/stock/destroy/{id}', 'StockController@destroy')->middleware('auth')->name('stock.customdestroy');
+
 
 //routes for Requests controller
 Route::resource('requests', 'RequestsController')->middleware('auth');
 Route::get('/requests/edit/{id}', 'requestsController@edit')->middleware('auth');
-Route::get('/requests/destroy/{id}', 'requestsController@destroy')->middleware('auth')->name('customdestroy');
+Route::get('/requests/destroy/{id}', 'requestsController@destroy')->middleware('auth')->name('requests.customdestroy');
