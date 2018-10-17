@@ -14,7 +14,50 @@
 <body>
 
     <!-- NAV BAR -->
-
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Vaccinbeheer</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05"
+                aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="collapse navbar-collapse" id="navbarsExample05">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('stock.index')}}">Voorraad</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('requests.index')}}">Aanvragen</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('vaccinations.index')}}">Vaccinaties</a>
+                    </li>
+                    <hr class="" />
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                            Beheer
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Voorraad</a>
+                            <a class="dropdown-item" href="#">Aanvragen</a>
+                            <a class="dropdown-item" href="#">Vaccinaties</a>
+                            <a class="dropdown-item" href="#">Gebruikers</a>
+                            <a class="dropdown-item" href="#">Vaccins</a>
+                            <a class="dropdown-item" href="#">Scholen</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                                {{ Auth::user()->name }}
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Profiel</a>
+                            <a class="dropdown-item" href="{{ route('logout') }}">Afmelden</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
     <!-------------->
     <div class="container">
             @yield('content')

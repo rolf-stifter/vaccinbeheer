@@ -9,20 +9,22 @@
     @endif
 </div>
 
-<div class="nav-icons">
-    <a href={{route('requests.create')}}><i class="fas fa-plus fa-3x"></i></a>
-</div>
+<div class="container bg-white shadow">
+    <div class="pb-2 mt-4 mb-2 border-bottom">
+        <h1>Aanvragen</h1>
+    </div>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Vaccin</th>
-            <th>Aantal</th>
-            <th>Aanvraag datum</th>
-            <th>status</th>
-            <th colspan="2">Actie</th>
-        </tr>
-    </thead>
+<div class="table-responsive">
+    <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Vaccin</th>
+                    <th scope="col">Aantal</th>
+                    <th scope="col">Aanvraag datum</th>
+                    <th scope="col">status</th>
+                    <th colspan="2" scope="col"><a href="{{ route('requests.create')}}"><i style="color:#fff;" class="fas fa-plus"></i></th>
+                </tr>
+            </thead>
     <tbody>
         @foreach($requests as $request)
         <tr>
@@ -30,8 +32,8 @@
             <td>{{$request->quantity}}</td>
             <td>{{$request->request_date}}</td>
             <td>{{$request->status}}</td>
-            <td><a href="{{ route('requests.edit', $request->id)}}" class="btn btn-primary">Wijzigen</td>
-            <td><button class="btn btn-danger" onclick="delete_data('{{route('requests.customdestroy', $request->id)}}')">Verwijderen</button>
+            <td><a href="{{ route('requests.edit', $request->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
+            <td><button class="btn btn-danger" onclick="delete_data('{{route('requests.customdestroy', $request->id)}}')"><i class="fas fa-trash-alt"></i></button>
                 <!--
                 <form action="{{ route('requests.destroy', $request->id)}}" method="POST">
                     @csrf

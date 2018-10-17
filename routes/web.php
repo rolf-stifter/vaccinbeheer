@@ -29,3 +29,8 @@ Route::get('/stock/destroy/{id}', 'StockController@destroy')->middleware('auth')
 Route::resource('requests', 'RequestsController')->middleware('auth');
 Route::get('/requests/edit/{id}', 'requestsController@edit')->middleware('auth');
 Route::get('/requests/destroy/{id}', 'requestsController@destroy')->middleware('auth')->name('requests.customdestroy');
+
+//routes for Vaccinations controller
+Route::resource('vaccinations', 'VaccinationsController')->middleware('auth');
+Route::get('/vaccinations/edit/{id}', 'VaccinationsController@edit')->middleware('auth');
+Route::get('/vaccinations/destroy/{id}', 'VaccinationsController@destroy')->middleware('auth')->name('vaccinations.customdestroy');
