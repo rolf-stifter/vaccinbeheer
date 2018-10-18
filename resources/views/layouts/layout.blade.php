@@ -52,7 +52,15 @@
                         </a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="#">Profiel</a>
-                            <a class="dropdown-item" href="{{ route('logout') }}">Afmelden</a>
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        Afmelden
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
                         </div>
                     </li>
                 </ul>
