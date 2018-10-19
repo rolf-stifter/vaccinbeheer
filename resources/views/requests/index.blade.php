@@ -21,6 +21,7 @@
                     <th scope="col">Vaccin</th>
                     <th scope="col">Aantal</th>
                     <th scope="col">Aanvraag datum</th>
+                    <th scope="col">Gebruiker</th>
                     <th scope="col">status</th>
                     <th colspan="2" scope="col"><a href="{{ route('requests.create')}}"><i style="color:#fff;" class="fas fa-plus"></i></th>
                 </tr>
@@ -28,19 +29,16 @@
     <tbody>
         @foreach($requests as $request)
         <tr>
-            <td>{{$request->vaccine_id}}</td>
+            <td>{{$request->stock->productName}}</td>
             <td>{{$request->quantity}}</td>
             <td>{{$request->request_date}}</td>
+            <td>{{$request->user->name}}</td>
             <td>{{$request->status}}</td>
-            <td><a href="{{ route('requests.edit', $request->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
-            <td><button class="btn btn-danger" onclick="delete_data('{{route('requests.customdestroy', $request->id)}}')"><i class="fas fa-trash-alt"></i></button>
-                <!--
-                <form action="{{ route('requests.destroy', $request->id)}}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-danger" type="submit" onclick="delete();">Verwijderen</button>
-                </form>
-                -->
+
+            @if(Auth::id() == $request->user_id)
+                <td><a href="{{ route('requests.edit', $request->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
+                <td><button class="btn btn-danger" onclick="delete_data('{{route('requests.customdestroy', $request->id)}}')"><i class="fas fa-trash-alt"></i></button>
+            @endif
             </td>
         </tr>
         @endforeach

@@ -24,7 +24,7 @@
                     <th>Product naam</th>
                     <th>Aantal</th>
                     <th>Aantal na vaccinaties</th>
-                    <th colspan="2" scope="col"><a href="{{ route('stock.create')}}"><i style="color:#fff;" class="fas fa-plus"></i></th>
+                    <!--<th colspan="2" scope="col"><a href="{{ route('stock.create')}}"><i style="color:#fff;" class="fas fa-plus"></i></th>-->
                 </tr>
             </thead>
 
@@ -39,8 +39,8 @@
                 <td>{{ $stock_line->productName}}</td>
                 <td>{{ $stock_line->quantity}}</td>
                 <td>{{ $stock_line->quantityAfterVac}}</td>
-                <td><a href="{{ route('stock.edit', $stock_line->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
-                <td><button class="btn btn-danger" onclick="delete_data('{{route('stock.customdestroy', $stock_line->id)}}')"><i class="fas fa-trash-alt"></i></button>
+               <!-- <td><a href="{{ route('stock.edit', $stock_line->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
+                <td><button class="btn btn-danger" onclick="delete_data('{{route('stock.customdestroy', $stock_line->id)}}')"><i class="fas fa-trash-alt"></i></button> -->
             </tr>
             @endforeach
     </tbody>

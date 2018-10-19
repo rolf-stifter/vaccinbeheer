@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 //use Illuminate\Support\Facades\Request;
@@ -18,7 +19,7 @@ class RequestsController extends Controller
     public function index()
     {
 
-        $requests = Requests::all();
+        $requests = Requests::with('stock', 'user')->get();
 
         return view('requests/index', compact('requests'));
     }
@@ -30,6 +31,7 @@ class RequestsController extends Controller
      */
     public function create()
     {
+        
         return view('requests/create');
     }
 
@@ -49,6 +51,7 @@ class RequestsController extends Controller
         ]);
 
         $request = new Requests([
+            'user_id' => Auth::id(),
             'vaccine_id' => $request->get('vaccine_id'),
             'quantity' => $request->get('quantity'),
             'request_date' => $request->get('request_date'),
@@ -79,7 +82,11 @@ class RequestsController extends Controller
     public function edit($id)
     {
 
-        $requests = Requests::find($id);
+        $requests = Requests::findOrFail($id);
+
+        if(Auth::id() != $requests->user_id){
+            return redirect('/requests');
+        }
 
         return view('requests/edit', compact('requests'));
     }
@@ -103,7 +110,7 @@ class RequestsController extends Controller
         $requests = Requests::find($id);
             $requests->vaccine_id = $request->get('vaccine_id');
             $requests->quantity = $request->get('quantity');
-            $requests->request_date = $request->get('request_date');
+            $requests->request_date = $request->get('request_date');  
             $requests->status =  $request->get('status');
             $requests->save();
 
@@ -119,6 +126,10 @@ class RequestsController extends Controller
     public function destroy($id)
     {
         $requests = Requests::find($id);
+
+        if(Auth::id() != $requests->user_id){
+            return redirect('/requests');
+        }
         $requests->delete();
 
         return redirect('/requests')->with('success', 'Aanvraag verwijdert');

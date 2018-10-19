@@ -12,4 +12,14 @@ class Requests extends Model
         'request_date',
         'status'
     ];
+
+    public function stock()
+    {
+        return $this->belongsTo('App\Stock', 'vaccine_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }

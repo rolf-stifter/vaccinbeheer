@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Vaccinations;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VaccinationsController extends Controller
 {
@@ -16,7 +17,7 @@ class VaccinationsController extends Controller
     public function index()
     {
 
-        $vaccinations = DB::table('vaccinations')->get();
+        $vaccinations = Vaccinations::with('stock', 'user')->get();
 
         return view('vaccinations/index', compact('vaccinations'));
     }
@@ -52,11 +53,12 @@ class VaccinationsController extends Controller
             'school' => $request->get('school'),
             'school_class' => $request->get('school_class'),
             'vaccine_id' => $request->get('vaccine_id'),
+            'user_id' => Auth::id(),
             'quantity' => $request->get('quantity')
         ]);
         
         $vaccinations->save();
-        return redirect('/vaccinations')->with('success', 'Aanvraag is ingediend');
+        //return redirect('/vaccinations')->with('success', 'Aanvraag is ingediend');
     }
 
     /**
@@ -80,6 +82,10 @@ class VaccinationsController extends Controller
     {
 
         $vaccinations = Vaccinations::find($id);
+        
+        if(Auth::id() != $vaccinations->user_id){
+            return redirect('/vaccinations');
+        }
 
         return view('vaccinations/edit', compact('vaccinations'));
     }
@@ -121,6 +127,11 @@ class VaccinationsController extends Controller
     public function destroy($id)
     {
         $vaccinations = Vaccinations::find($id);
+
+        if(Auth::id() != $vaccinations->user_id){
+            return redirect('/vaccinations');
+        }
+
         $vaccinations->delete();
 
         return redirect('/vaccinations')->with('success', 'Aanvraag verwijdert');

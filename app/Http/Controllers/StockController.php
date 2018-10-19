@@ -13,7 +13,7 @@ class StockController extends Controller
     public function index()
     {
 
-        $stock_lines = DB::table('stock')->get();
+        $stock_lines = Stock::all();
 
         return view('stock/index', compact('stock_lines'));
     }
