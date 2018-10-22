@@ -32,7 +32,6 @@
 
     <tbody>
             @foreach($vaccinations as $vaccination)
-                @if(Auth::id() == $vaccination->user_id)
                     <tr>
                         <td>{{ $vaccination->vaccination_date }}</td>
                         <td>{{ $vaccination->schools->name}}</td>
@@ -42,9 +41,7 @@
                         <td>{{ $vaccination->quantity}}</td>
                         <td><a href="{{ route('manage_vaccinations.edit', $vaccination->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
                         <td><button class="btn btn-danger" onclick="delete_data('{{route('manage_vaccinations.customdestroy', $vaccination->id)}}')"><i class="fas fa-trash-alt"></i></button>
-                        
                     </tr>
-                @endif
             @endforeach
     </tbody>
     </table>
