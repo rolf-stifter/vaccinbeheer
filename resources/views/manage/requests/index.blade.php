@@ -11,7 +11,7 @@
 
 <div class="container bg-white shadow">
     <div class="pb-2 mt-4 mb-2 border-bottom">
-        <h1>Aanvragen</h1>
+        <h1>Beheer Aanvragen</h1>
     </div>
 
 <div class="table-responsive">
@@ -23,22 +23,20 @@
                     <th scope="col">Aanvraag datum</th>
                     <th scope="col">Gebruiker</th>
                     <th scope="col">status</th>
-                    <th colspan="2" scope="col"><a href="{{ route('requests.create')}}"><i style="color:#fff;" class="fas fa-plus"></i></th>
+                    <th colspan="2" scope="col"><a href="{{ route('manage_requests.create')}}"><i style="color:#fff;" class="fas fa-plus"></i></th>
                 </tr>
             </thead>
     <tbody>
         @foreach($requests as $request)
-            @if(Auth::id() == $request->user_id)
                 <tr>
                     <td>{{$request->vaccins->name}}, {{$request->vaccins->type}}</td>
                     <td>{{$request->quantity}}</td>
                     <td>{{$request->request_date}}</td>
                     <td>{{$request->user->name}}</td>
                     <td>{{$request->status}}</td>
-                    <td><a href="{{ route('requests.edit', $request->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
-                    <td><button class="btn btn-danger" onclick="delete_data('{{route('requests.customdestroy', $request->id)}}')"><i class="fas fa-trash-alt"></i></button></td>
+                    <td><a href="{{ route('manage_requests.edit', $request->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
+                    <td><button class="btn btn-danger" onclick="delete_data('{{route('manage_requests.customdestroy', $request->id)}}')"><i class="fas fa-trash-alt"></i></button></td>
                 </tr>
-            @endif
         @endforeach
     </tbody>
 </table>

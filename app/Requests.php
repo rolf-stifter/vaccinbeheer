@@ -13,9 +13,9 @@ class Requests extends Model
         'status'
     ];
 
-    public function stock()
+    public function vaccins()
     {
-        return $this->belongsTo('App\Stock', 'vaccine_id');
+        return $this->belongsTo('App\Vaccins', 'vaccine_id');
     }
 
     public function user()

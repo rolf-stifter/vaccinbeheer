@@ -5,17 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Stock;
+use App\User;
 //use App\Http\Controllers\Controller;
 
-class StockController extends Controller
+class manage_StockController extends Controller
 {
 
     public function index()
     {
 
-        $stock_lines = Stock::with('vaccins')->get();
+        $stock_lines = Stock::with('user', 'vaccins')->get();
 
-        return view('stock/index', compact('stock_lines'));
+        return view('manage/stock/index', compact('stock_lines'));
     }
 
     /**
@@ -25,7 +26,9 @@ class StockController extends Controller
      */
     public function create()
     {
-        return view('stock/create');
+        $users = User::all();
+
+        return view('manage/stock/create', compact('users'));
     }
 
     /**
@@ -38,6 +41,7 @@ class StockController extends Controller
     {
         $request->validate([
             'isUsed' => 'required|integer',
+            'user_id' => 'required',
             'productName' => 'required',
             'quantity' => 'required|integer',
             'quantityAfterVac' => 'required|integer'
@@ -45,13 +49,14 @@ class StockController extends Controller
 
         $stock_lines = new Stock([
             'isUsed' => $request->get('isUsed'),
+            'user_id' => $request->get('user_id'),
             'productName' => $request->get('productName'),
             'quantity' => $request->get('quantity'),
             'quantityAfterVac' => $request->get('quantityAfterVac')
         ]);
         
         $stock_lines->save();
-        return redirect('/stock')->with('success', 'Aanvraag is ingediend');
+        return redirect('manage_stock')->with('success', 'product is toegevoegd');
     }
 
     /**
@@ -73,10 +78,10 @@ class StockController extends Controller
      */
     public function edit($id)
     {
-
+        $users = User::all();
         $stock_lines = Stock::find($id);
 
-        return view('stock/edit', compact('stock_lines'));
+        return view('manage/stock/edit', compact('stock_lines', 'users'));
     }
 
     /**
@@ -90,6 +95,7 @@ class StockController extends Controller
     {
         $request->validate([
             'isUsed' => 'required|integer',
+            'user_id' => 'required|exists:users,id',
             'productName' => 'required',
             'quantity' => 'required|integer',
             'quantityAfterVac' => 'required|integer'
@@ -102,7 +108,7 @@ class StockController extends Controller
             $stock_lines->quantityAfterVac =  $request->get('quantityAfterVac');
             $stock_lines->save();
 
-        return redirect('/stock')->with('success', 'Aanvraag aangepast');
+        return redirect('manage_stock')->with('success', 'Aanvraag aangepast');
     }
 
     /**
@@ -117,6 +123,6 @@ class StockController extends Controller
         $stock_lines = Stock::find($id);
         $stock_lines->delete();
 
-        return redirect('/stock')->with('success', 'Aanvraag verwijdert');
+        return redirect('manage_stock')->with('success', 'Aanvraag verwijdert');
     }
 }

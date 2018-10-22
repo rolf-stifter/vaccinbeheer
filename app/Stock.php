@@ -19,6 +19,17 @@ class Stock extends Model
         'isUsed',
         'productName',
         'quantity',
-        'quantityAfterVac'
+        'quantityAfterVac',
+        'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
+    public function vaccins()
+    {
+        return $this->belongsTo('App\Vaccins', 'vaccine_id');
+    }
 }

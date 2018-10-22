@@ -15,25 +15,19 @@ class Vaccinations extends Model
         'quantity'
     ];
 
-
-    public function get_vaccine_name()
+    public function vaccins()
     {
-        $vaccinations = DB::table('vaccinations')
-                        ->leftJoin('stock', 'vaccine_id', '=', 'stock.id')
-                        ->select('vaccinations.*', 'stock.productName')
-                        ->get();
-
-        return $vaccinations;
-    }
-
-    public function stock()
-    {
-        return $this->belongsTo('App\Stock', 'vaccine_id');
+        return $this->belongsTo('App\Vaccins', 'vaccine_id');
     }
 
     
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    public function schools()
+    {
+        return $this->belongsTo('App\Schools', 'school_id');
     }
 }

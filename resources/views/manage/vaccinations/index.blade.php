@@ -13,7 +13,7 @@
 
 <div class="container bg-white shadow">
         <div class="pb-2 mt-4 mb-2 border-bottom">
-            <h1>Vaccinaties</h1>
+            <h1>Beheer Vaccinaties</h1>
         </div>
     
 <div class="table-responsive">
@@ -26,7 +26,7 @@
                     <th>Vaccin</th>
                     <th>Gebruiker</th>
                     <th>Aantal</th>
-                    <th colspan="2" scope="col"><a href="{{ route('vaccinations.create')}}"><i style="color:#fff;" class="fas fa-plus"></i></th>
+                    <th colspan="2" scope="col"><a href="{{ route('manage_vaccinations.create')}}"><i style="color:#fff;" class="fas fa-plus"></i></th>
                 </tr>
             </thead>
 
@@ -40,8 +40,8 @@
                         <td>{{ $vaccination->vaccins->name}}, {{$vaccination->vaccins->type}}</td>
                         <td>{{ $vaccination->user->name}}</td>
                         <td>{{ $vaccination->quantity}}</td>
-                        <td><a href="{{ route('vaccinations.edit', $vaccination->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
-                        <td><button class="btn btn-danger" onclick="delete_data('{{route('vaccinations.customdestroy', $vaccination->id)}}')"><i class="fas fa-trash-alt"></i></button>
+                        <td><a href="{{ route('manage_vaccinations.edit', $vaccination->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
+                        <td><button class="btn btn-danger" onclick="delete_data('{{route('manage_vaccinations.customdestroy', $vaccination->id)}}')"><i class="fas fa-trash-alt"></i></button>
                         
                     </tr>
                 @endif

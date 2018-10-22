@@ -16,7 +16,7 @@ class CreateStockTable extends Migration
         Schema::create('stock', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('isUsed');
-            $table->string('productName');
+            $table->string('vaccine_id');
             $table->integer('quantity');
             $table->integer('quantityAfterVac');
             $table->timestamps();

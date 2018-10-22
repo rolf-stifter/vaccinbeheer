@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class VaccinationsController extends Controller
+class manage_VaccinationsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +19,7 @@ class VaccinationsController extends Controller
 
         $vaccinations = Vaccinations::with('vaccins', 'user', 'schools')->get();
 
-        return view('vaccinations/index', compact('vaccinations'));
+        return view('manage/vaccinations/index', compact('vaccinations'));
     }
 
     /**
@@ -29,7 +29,7 @@ class VaccinationsController extends Controller
      */
     public function create()
     {
-        return view('vaccinations/create');
+        return view('manage/vaccinations/create');
     }
 
     /**
@@ -58,7 +58,7 @@ class VaccinationsController extends Controller
         ]);
         
         $vaccinations->save();
-        return redirect('/vaccinations')->with('success', 'Aanvraag is ingediend');
+        return redirect('/manage_vaccinations')->with('success', 'Vaccinatie is toegevoegd');
     }
 
     /**
@@ -87,7 +87,7 @@ class VaccinationsController extends Controller
             return redirect('/vaccinations');
         }
 
-        return view('vaccinations/edit', compact('vaccinations'));
+        return view('manage/vaccinations/edit', compact('vaccinations'));
     }
 
     /**
@@ -115,7 +115,7 @@ class VaccinationsController extends Controller
             $vaccinations->quantity =  $request->get('quantity');
             $vaccinations->save();
 
-        return redirect('/vaccinations')->with('success', 'Aanvraag aangepast');
+        return redirect('/manage_vaccinations')->with('success', 'Vaccinatie aangepast');
     }
 
     /**
@@ -129,11 +129,11 @@ class VaccinationsController extends Controller
         $vaccinations = Vaccinations::find($id);
 
         if(Auth::id() != $vaccinations->user_id){
-            return redirect('/vaccinations');
+            return redirect('/manage_vaccinations');
         }
 
         $vaccinations->delete();
 
-        return redirect('/vaccinations')->with('success', 'Aanvraag verwijdert');
+        return redirect('/manage_vaccinations')->with('success', 'Vaccinatie verwijdert');
     }
 }

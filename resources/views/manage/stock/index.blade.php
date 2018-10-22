@@ -13,41 +13,31 @@
 
 <div class="container bg-white shadow">
         <div class="pb-2 mt-4 mb-2 border-bottom">
-            <h1>Voorraad</h1>
+            <h1>Beheer Voorraad</h1>
         </div>
     
 <div class="table-responsive">
     <table class="table table-bordered">
             <thead class="thead-dark">
                 <tr>
-                    <th>In gebruik</th>
+                    <th>Gebruiker</th>
                     <th>Product naam</th>
                     <th>Aantal</th>
                     <th>Aantal na vaccinaties</th>
-                    <!--
-                        <th colspan="2" scope="col"><a href="{{ route('stock.create')}}"><i style="color:#fff;" class="fas fa-plus"></i></th>
-                        -->
+                    <th colspan="2" scope="col"><a href="{{ route('manage_stock.create')}}"><i style="color:#fff;" class="fas fa-plus"></i></th>
                 </tr>
             </thead>
 
     <tbody>
             @foreach($stock_lines as $stock_line)
-                @if(Auth::id() == $stock_line->user_id)
-                    <tr>
-                        @if($stock_line->isUsed == 1)
-                            <td>&#10004;</td>
-                        @else
-                            <td>&#10060;</td>
-                        @endif
-                        <td>{{ $stock_line->vaccins->name}}, {{$stock_line->vaccins->type}}</td>
-                        <td>{{ $stock_line->quantity}}</td>
-                        <td>{{ $stock_line->quantityAfterVac}}</td>
-                    <!-- 
-                        <td><a href="{{ route('stock.edit', $stock_line->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
-                        <td><button class="btn btn-danger" onclick="delete_data('{{route('stock.customdestroy', $stock_line->id)}}')"><i class="fas fa-trash-alt"></i></button> 
-                        -->
-                    </tr>
-                @endif
+            <tr>
+                <td>{{ $stock_line->user->name}}</td>
+                <td>{{ $stock_line->vaccins->name}}, {{ $stock_line->vaccins->type}} </td>
+                <td>{{ $stock_line->quantity}}</td>
+                <td>{{ $stock_line->quantityAfterVac}}</td>
+                <td><a href="{{ route('manage_stock.edit', $stock_line->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
+                <td><button class="btn btn-danger" onclick="delete_data('{{route('manage_stock.customdestroy', $stock_line->id)}}')"><i class="fas fa-trash-alt"></i></button>
+            </tr>
             @endforeach
     </tbody>
     </table>

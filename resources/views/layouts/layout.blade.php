@@ -38,12 +38,12 @@
                             Beheer
                         </a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Voorraad</a>
-                            <a class="dropdown-item" href="#">Aanvragen</a>
-                            <a class="dropdown-item" href="#">Vaccinaties</a>
-                            <a class="dropdown-item" href="#">Gebruikers</a>
-                            <a class="dropdown-item" href="#">Vaccins</a>
-                            <a class="dropdown-item" href="#">Scholen</a>
+                            <a class="dropdown-item" href="{{route('manage_stock.index')}}">Voorraad</a>
+                            <a class="dropdown-item" href="{{route('manage_requests.index')}}">Aanvragen</a>
+                            <a class="dropdown-item" href="{{route('manage_vaccinations.index')}}">Vaccinaties</a>
+                            <a class="dropdown-item" href="{{route('users.index')}}">Gebruikers</a>
+                            <a class="dropdown-item" href="{{route('vaccins.index')}}">Vaccins</a>
+                            <a class="dropdown-item" href="{{route('schools.index')}}">Scholen</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">

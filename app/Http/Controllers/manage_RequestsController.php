@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 //use Illuminate\Support\Facades\Request;
 
-class RequestsController extends Controller
+class manage_RequestsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,8 +20,8 @@ class RequestsController extends Controller
     {
 
         $requests = Requests::with('vaccins', 'user')->get();
-
-        return view('requests/index', compact('requests'));
+        
+        return view('manage/requests/index', compact('requests'));
     }
 
     /**
@@ -32,7 +32,7 @@ class RequestsController extends Controller
     public function create()
     {
         
-        return view('requests/create');
+        return view('manage/requests/create');
     }
 
     /**
@@ -59,7 +59,7 @@ class RequestsController extends Controller
         ]);
         
         $request->save();
-        return redirect('/requests')->with('success', 'Aanvraag is ingediend');
+        return redirect('/manage_requests')->with('success', 'Aanvraag is ingediend');
     }
 
     /**
@@ -85,10 +85,10 @@ class RequestsController extends Controller
         $requests = Requests::findOrFail($id);
 
         if(Auth::id() != $requests->user_id){
-            return redirect('/requests');
+            return redirect('/manage_requests');
         }
 
-        return view('requests/edit', compact('requests'));
+        return view('manage/requests/edit', compact('requests'));
     }
 
     /**
@@ -114,7 +114,7 @@ class RequestsController extends Controller
             $requests->status =  $request->get('status');
             $requests->save();
 
-        return redirect('/requests')->with('success', 'Aanvraag aangepast');
+        return redirect('/manage_requests')->with('success', 'Aanvraag aangepast');
     }
 
     /**
@@ -128,10 +128,10 @@ class RequestsController extends Controller
         $requests = Requests::find($id);
 
         if(Auth::id() != $requests->user_id){
-            return redirect('/requests');
+            return redirect('/manage_requests');
         }
         $requests->delete();
 
-        return redirect('/requests')->with('success', 'Aanvraag verwijdert');
+        return redirect('/manage_requests')->with('success', 'Aanvraag verwijdert');
     }
 }
