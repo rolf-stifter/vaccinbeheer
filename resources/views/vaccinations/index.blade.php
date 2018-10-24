@@ -24,7 +24,6 @@
                     <th>School</th>
                     <th>Klas</th>
                     <th>Vaccin</th>
-                    <th>Gebruiker</th>
                     <th>Aantal</th>
                     <th colspan="2" scope="col"><a href="{{ route('vaccinations.create')}}"><i style="color:#fff;" class="fas fa-plus"></i></th>
                 </tr>
@@ -38,7 +37,6 @@
                         <td>{{ $vaccination->schools->name}}</td>
                         <td>{{ $vaccination->school_class}}</td>
                         <td>{{ $vaccination->vaccins->name}}, {{$vaccination->vaccins->type}}</td>
-                        <td>{{ $vaccination->user->name}}</td>
                         <td>{{ $vaccination->quantity}}</td>
                         <td><a href="{{ route('vaccinations.edit', $vaccination->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
                         <td><button class="btn btn-danger" onclick="delete_data('{{route('vaccinations.customdestroy', $vaccination->id)}}')"><i class="fas fa-trash-alt"></i></button>

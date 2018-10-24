@@ -33,7 +33,7 @@
                     <td>{{$request->quantity}}</td>
                     <td>{{$request->request_date}}</td>
                     <td>{{$request->user->name}}</td>
-                    <td>{{$request->status}}</td>
+                    <td>{{$request->status->name}}</td>
                     <td><a href="{{ route('manage_requests.edit', $request->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
                     <td><button class="btn btn-danger" onclick="delete_data('{{route('manage_requests.customdestroy', $request->id)}}')"><i class="fas fa-trash-alt"></i></button></td>
                 </tr>

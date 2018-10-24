@@ -18,8 +18,12 @@
     <form method="POST" action="{{ route('requests.store') }}">
         <div class="form-group">
             @csrf
-            <label>Vaccin_id:</label>
-            <input type="text" class="form-control" name="vaccine_id">
+            <label>Vaccin:</label>
+           <select name="vaccine_id" class="form-control">
+                @foreach($vaccins as $vaccin)
+                    <option value="{{$vaccin->id}}"> {{$vaccin->type}}, {{$vaccin->name}} </option>
+                @endforeach
+           </select>
         </div>
         <div class="form-group">
             <label>Aantal:</label>
@@ -28,10 +32,6 @@
         <div class="form-group">
             <label>Datum aanvraag:</label>
             <input type="date" class="form-control" name="request_date">
-        </div>
-        <div class="form-group">
-            <label>Status:</label>
-            <input type="text" class="form-control" name="status">
         </div>
         <div class="form-group">
             <input type="submit" value="Aanvragen" class="btn btn-primary">

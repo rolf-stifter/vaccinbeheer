@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Requests;
+use App\Status;
+use App\Vaccins;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -18,8 +20,7 @@ class RequestsController extends Controller
      */
     public function index()
     {
-
-        $requests = Requests::with('vaccins', 'user')->get();
+        $requests = Requests::with('vaccins', 'user', 'status')->get();
 
         return view('requests/index', compact('requests'));
     }
@@ -31,8 +32,8 @@ class RequestsController extends Controller
      */
     public function create()
     {
-        
-        return view('requests/create');
+        $vaccins = Vaccins::all();
+        return view('requests/create', compact('vaccins'));
     }
 
     /**
@@ -47,7 +48,6 @@ class RequestsController extends Controller
             'vaccine_id' => 'required|integer',
             'quantity' => 'required|integer',
             'request_date' => 'required|date',
-            'status' => 'required'
         ]);
 
         $request = new Requests([
@@ -55,7 +55,7 @@ class RequestsController extends Controller
             'vaccine_id' => $request->get('vaccine_id'),
             'quantity' => $request->get('quantity'),
             'request_date' => $request->get('request_date'),
-            'status' => $request->get('status')
+            'status_id' => 1
         ]);
         
         $request->save();
@@ -81,14 +81,14 @@ class RequestsController extends Controller
      */
     public function edit($id)
     {
-
+        $statuses = Status::all();
         $requests = Requests::findOrFail($id);
 
         if(Auth::id() != $requests->user_id){
             return redirect('/requests');
         }
 
-        return view('requests/edit', compact('requests'));
+        return view('requests/edit', compact('requests', 'statuses'));
     }
 
     /**
@@ -104,14 +104,14 @@ class RequestsController extends Controller
             'vaccine_id' => 'required|integer',
             'quantity' => 'required|integer',
             'request_date' => 'required|date',
-            'status' => 'required'
+            'status_id' => 'required'
         ]);
 
         $requests = Requests::find($id);
             $requests->vaccine_id = $request->get('vaccine_id');
             $requests->quantity = $request->get('quantity');
             $requests->request_date = $request->get('request_date');  
-            $requests->status =  $request->get('status');
+            $requests->status_id =  $request->get('status_id');
             $requests->save();
 
         return redirect('/requests')->with('success', 'Aanvraag aangepast');

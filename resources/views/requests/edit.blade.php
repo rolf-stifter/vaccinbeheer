@@ -32,7 +32,11 @@
         </div>
         <div class="form-group">
             <label>Status:</label>
-            <input type="text" class="form-control" name="status" value={{$requests->status}}>
+            <select name="status_id" class="form-control">
+                @foreach($statuses as $status)
+                <option value="{{$status->id}}" {{$status->id == $requests->status_id ? 'selected': ''}}> {{$status->name }} </option>
+                @endforeach
+            </select>
         </div>
         <div class="form-group">
             <input type="submit" value="Wijzig" class="btn btn-primary">

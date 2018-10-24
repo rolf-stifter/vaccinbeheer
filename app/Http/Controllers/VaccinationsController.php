@@ -6,6 +6,8 @@ use App\Vaccinations;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Schools;
+use App\Vaccins;
 
 class VaccinationsController extends Controller
 {
@@ -29,7 +31,9 @@ class VaccinationsController extends Controller
      */
     public function create()
     {
-        return view('vaccinations/create');
+        $schools = Schools::all();
+        $vaccins = Vaccins::all();
+        return view('vaccinations/create', compact('schools', 'vaccins'));
     }
 
     /**
@@ -42,7 +46,7 @@ class VaccinationsController extends Controller
     {
         $request->validate([
             'vaccination_date' => 'required',
-            'school' => 'required',
+            'school_id' => 'required',
             'school_class' => 'required',
             'vaccine_id' => 'required|integer',
             'quantity' => 'required|integer'
@@ -50,7 +54,7 @@ class VaccinationsController extends Controller
 
         $vaccinations = new Vaccinations([
             'vaccination_date' => $request->get('vaccination_date'),
-            'school' => $request->get('school'),
+            'school_id' => $request->get('school_id'),
             'school_class' => $request->get('school_class'),
             'vaccine_id' => $request->get('vaccine_id'),
             'user_id' => Auth::id(),
@@ -82,12 +86,14 @@ class VaccinationsController extends Controller
     {
 
         $vaccinations = Vaccinations::find($id);
-        
+        $schools = Schools::all();
+        $vaccins = Vaccins::all();
+
         if(Auth::id() != $vaccinations->user_id){
             return redirect('/vaccinations');
         }
 
-        return view('vaccinations/edit', compact('vaccinations'));
+        return view('vaccinations/edit', compact('vaccinations', 'schools', 'vaccins'));
     }
 
     /**
@@ -101,7 +107,7 @@ class VaccinationsController extends Controller
     {
         $request->validate([
             'vaccination_date' => 'required',
-            'school' => 'required',
+            'school_id' => 'required',
             'school_class' => 'required',
             'vaccine_id' => 'required|integer',
             'quantity' => 'required|integer'
@@ -109,7 +115,7 @@ class VaccinationsController extends Controller
 
         $vaccinations = Vaccinations::find($id);
             $vaccinations->vaccination_date = $request->get('vaccination_date');
-            $vaccinations->school = $request->get('school');
+            $vaccinations->school_id = $request->get('school_id');
             $vaccinations->school_class = $request->get('school_class');
             $vaccinations->vaccine_id =  $request->get('vaccine_id');
             $vaccinations->quantity =  $request->get('quantity');

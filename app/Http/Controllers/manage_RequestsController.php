@@ -47,7 +47,7 @@ class manage_RequestsController extends Controller
             'vaccine_id' => 'required|integer',
             'quantity' => 'required|integer',
             'request_date' => 'required|date',
-            'status' => 'required'
+            'status_id' => 'required'
         ]);
 
         $request = new Requests([
@@ -55,7 +55,7 @@ class manage_RequestsController extends Controller
             'vaccine_id' => $request->get('vaccine_id'),
             'quantity' => $request->get('quantity'),
             'request_date' => $request->get('request_date'),
-            'status' => $request->get('status')
+            'status_id' => $request->get('status')
         ]);
         
         $request->save();

@@ -24,7 +24,11 @@
         </div>
         <div class="form-group">
             <label>School:</label>
-            <input type="text" class="form-control" name="school" value={{$vaccinations->school}}>
+            <select name="school_id" class="form-control">
+                @foreach ($schools as $school)
+                    <option value="{{$school->id}}" {{$school->id == $vaccinations->school_id?'selected':''}}> {{$school->name }}</option>
+                @endforeach
+            </select>
         </div>
         <div class="form-group">
             <label>Klas:</label>
@@ -32,7 +36,11 @@
         </div>
         <div class="form-group">
             <label>Vaccin:</label>
-            <input type="text" class="form-control" name="vaccine_id" value={{$vaccinations->vaccine_id}}>
+            <select name="vaccine_id" class="form-control">
+                    @foreach ($vaccins as $vaccin)
+                        <option value="{{$vaccin->id}}" {{$vaccin->id == $vaccinations->vaccine_id?'selected':''}}> {{$vaccin->type}}, {{$vaccin->name }}</option>
+                    @endforeach
+                </select>
         </div>
         <div class="form-group">
             <label>Aantal:</label>
