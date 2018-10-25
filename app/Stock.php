@@ -20,7 +20,8 @@ class Stock extends Model
         'productName',
         'quantity',
         'quantityAfterVac',
-        'user_id'
+        'user_id', 
+        'vaccine_id'
     ];
 
     public function user()

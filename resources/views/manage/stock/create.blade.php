@@ -34,7 +34,11 @@
         </div>
         <div class="form-group">
             <label>Product Naam:</label>
-            <input type="text" class="form-control" name="productName">
+            <select name="vaccine_id" class="form-control">
+                @foreach($vaccins as $vaccin)
+                    <option value="{{$vaccin->id}}"> {{$vaccin->type}}, {{$vaccin->name}} </option>
+                @endforeach
+            </select>
         </div>
         <div class="form-group">
             <label>Aantal:</label>

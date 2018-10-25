@@ -19,9 +19,10 @@ class VaccinationsController extends Controller
     public function index()
     {
 
-        $vaccinations = Vaccinations::with('vaccins', 'user', 'schools')->get();
+        $vaccinations_finished = Vaccinations::get_finished_vaccinations_for_user(Auth::id());
+        $vaccinations_planned = Vaccinations::get_planned_vaccinations_for_user(Auth::id());
 
-        return view('vaccinations/index', compact('vaccinations'));
+        return view('vaccinations/index', compact('vaccinations_planned', 'vaccinations_finished'));
     }
 
     /**

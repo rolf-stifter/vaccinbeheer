@@ -29,7 +29,7 @@
         @foreach($requests as $request)
             @if(Auth::id() == $request->user_id)
                 <tr>
-                    <td>{{$request->vaccins->name}}, {{$request->vaccins->type}}</td>
+                    <td>{{$request->vaccins->type}}, {{$request->vaccins->name}}</td>
                     <td>{{$request->quantity}}</td>
                     <td>{{$request->request_date}}</td>
                     <td>{{$request->status->name}}</td>

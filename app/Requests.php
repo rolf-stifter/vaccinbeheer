@@ -29,9 +29,13 @@ class Requests extends Model
         return $this->belongsTo('App\Status');
     }
 
-    public function search_status()
+    public static function get_data_for_request_tabs($status)
     {
-        //$data = DB::table('requests')
-          //          ->select('status')
+        $requests = Requests::with('vaccins', 'user')->where([
+            ['status_id', '=',$status],  
+        ])
+        ->get();
+
+        return $requests;
     }
 }

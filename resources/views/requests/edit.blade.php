@@ -19,8 +19,12 @@
         @method('PATCH')
         @csrf
         <div class="form-group">
-            <label>Vaccin_id:</label>
-            <input type="text" class="form-control" name="vaccine_id" value={{$requests->vaccine_id}}>
+            <label>Vaccin:</label>
+            <select name="vaccine_id" class="form-control">
+                    @foreach($vaccins as $vaccin)
+                    <option value="{{$vaccin->id}}" {{$vaccin->id == $requests->vaccine_id ? 'selected': ''}}> {{$vaccin->type }}, {{$vaccin->name }} </option>
+                    @endforeach
+                </select>
         </div>
         <div class="form-group">
             <label>Aantal:</label>
@@ -29,14 +33,6 @@
         <div class="form-group">
             <label>Datum aanvraag:</label>
             <input type="date" class="form-control" name="request_date" value={{$requests->request_date}}>
-        </div>
-        <div class="form-group">
-            <label>Status:</label>
-            <select name="status_id" class="form-control">
-                @foreach($statuses as $status)
-                <option value="{{$status->id}}" {{$status->id == $requests->status_id ? 'selected': ''}}> {{$status->name }} </option>
-                @endforeach
-            </select>
         </div>
         <div class="form-group">
             <input type="submit" value="Wijzig" class="btn btn-primary">

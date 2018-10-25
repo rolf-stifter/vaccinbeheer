@@ -6,6 +6,9 @@ use App\Vaccinations;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Schools;
+use App\User;
+use App\Vaccins;
 
 class manage_VaccinationsController extends Controller
 {
@@ -17,9 +20,10 @@ class manage_VaccinationsController extends Controller
     public function index()
     {
 
-        $vaccinations = Vaccinations::with('vaccins', 'user', 'schools')->get();
+        $vaccinations_finished = Vaccinations::get_finished_vaccinations();
+        $vaccinations_planned = Vaccinations::get_planned_vaccinations();
 
-        return view('manage/vaccinations/index', compact('vaccinations'));
+        return view('manage/vaccinations/index', compact('vaccinations_finished', 'vaccinations_planned'));
     }
 
     /**
@@ -29,7 +33,11 @@ class manage_VaccinationsController extends Controller
      */
     public function create()
     {
-        return view('manage/vaccinations/create');
+        $schools = Schools::all();
+        $vaccins = Vaccins::all();
+        $users = User::all();
+
+        return view('manage/vaccinations/create', compact('schools', 'vaccins', 'users'));
     }
 
     /**
@@ -42,18 +50,19 @@ class manage_VaccinationsController extends Controller
     {
         $request->validate([
             'vaccination_date' => 'required',
-            'school' => 'required',
+            'school_id' => 'required',
             'school_class' => 'required',
             'vaccine_id' => 'required|integer',
+            'user_id' => 'required|integer',
             'quantity' => 'required|integer'
         ]);
 
         $vaccinations = new Vaccinations([
             'vaccination_date' => $request->get('vaccination_date'),
-            'school' => $request->get('school'),
+            'school_id' => $request->get('school_id'),
             'school_class' => $request->get('school_class'),
             'vaccine_id' => $request->get('vaccine_id'),
-            'user_id' => Auth::id(),
+            'user_id' => $request->get('user_id'),
             'quantity' => $request->get('quantity')
         ]);
         
@@ -82,12 +91,11 @@ class manage_VaccinationsController extends Controller
     {
 
         $vaccinations = Vaccinations::find($id);
-        
-        if(Auth::id() != $vaccinations->user_id){
-            return redirect('/vaccinations');
-        }
+        $schools = Schools::all();
+        $vaccins = Vaccins::all();
+        $users = User::all();
 
-        return view('manage/vaccinations/edit', compact('vaccinations'));
+        return view('manage/vaccinations/edit', compact('vaccinations', 'vaccins', 'users', 'schools'));
     }
 
     /**
@@ -101,21 +109,23 @@ class manage_VaccinationsController extends Controller
     {
         $request->validate([
             'vaccination_date' => 'required',
-            'school' => 'required',
+            'school_id' => 'required',
             'school_class' => 'required',
             'vaccine_id' => 'required|integer',
+            'user_id' => 'required|integer',
             'quantity' => 'required|integer'
         ]);
 
         $vaccinations = Vaccinations::find($id);
             $vaccinations->vaccination_date = $request->get('vaccination_date');
-            $vaccinations->school = $request->get('school');
+            $vaccinations->school_id = $request->get('school_id');
             $vaccinations->school_class = $request->get('school_class');
             $vaccinations->vaccine_id =  $request->get('vaccine_id');
+            $vaccinations->user_id = $request->get('user_id');
             $vaccinations->quantity =  $request->get('quantity');
             $vaccinations->save();
 
-        return redirect('/manage_vaccinations')->with('success', 'Vaccinatie aangepast');
+        return redirect('/manage_vaccinations')->with('success', 'Vaccinatie is aangepast');
     }
 
     /**
@@ -127,13 +137,8 @@ class manage_VaccinationsController extends Controller
     public function destroy($id)
     {
         $vaccinations = Vaccinations::find($id);
-
-        if(Auth::id() != $vaccinations->user_id){
-            return redirect('/manage_vaccinations');
-        }
-
         $vaccinations->delete();
 
-        return redirect('/manage_vaccinations')->with('success', 'Vaccinatie verwijdert');
+        return redirect('/manage_vaccinations')->with('success', 'Vaccinatie is verwijdert');
     }
 }

@@ -39,7 +39,7 @@
                         @else
                             <td>&#10060;</td>
                         @endif
-                        <td>{{ $stock_line->vaccins->name}}, {{$stock_line->vaccins->type}}</td>
+                        <td>{{ $stock_line->vaccins->type}}, {{$stock_line->vaccins->name}}</td>
                         <td>{{ $stock_line->quantity}}</td>
                         <td>{{ $stock_line->quantityAfterVac}}</td>
                     <!-- 

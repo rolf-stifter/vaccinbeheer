@@ -83,12 +83,13 @@ class RequestsController extends Controller
     {
         $statuses = Status::all();
         $requests = Requests::findOrFail($id);
+        $vaccins = Vaccins::all();
 
         if(Auth::id() != $requests->user_id){
             return redirect('/requests');
         }
 
-        return view('requests/edit', compact('requests', 'statuses'));
+        return view('requests/edit', compact('requests', 'statuses', 'vaccins'));
     }
 
     /**
@@ -104,14 +105,12 @@ class RequestsController extends Controller
             'vaccine_id' => 'required|integer',
             'quantity' => 'required|integer',
             'request_date' => 'required|date',
-            'status_id' => 'required'
         ]);
 
         $requests = Requests::find($id);
             $requests->vaccine_id = $request->get('vaccine_id');
             $requests->quantity = $request->get('quantity');
             $requests->request_date = $request->get('request_date');  
-            $requests->status_id =  $request->get('status_id');
             $requests->save();
 
         return redirect('/requests')->with('success', 'Aanvraag aangepast');

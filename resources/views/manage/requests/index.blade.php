@@ -14,32 +14,48 @@
         <h1>Beheer Aanvragen</h1>
     </div>
 
-<div class="table-responsive">
-    <table class="table table-bordered">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Vaccin</th>
-                    <th scope="col">Aantal</th>
-                    <th scope="col">Aanvraag datum</th>
-                    <th scope="col">Gebruiker</th>
-                    <th scope="col">status</th>
-                    <th colspan="2" scope="col"><a href="{{ route('manage_requests.create')}}"><i style="color:#fff;" class="fas fa-plus"></i></th>
-                </tr>
-            </thead>
-    <tbody>
-        @foreach($requests as $request)
-                <tr>
-                    <td>{{$request->vaccins->name}}, {{$request->vaccins->type}}</td>
-                    <td>{{$request->quantity}}</td>
-                    <td>{{$request->request_date}}</td>
-                    <td>{{$request->user->name}}</td>
-                    <td>{{$request->status->name}}</td>
-                    <td><a href="{{ route('manage_requests.edit', $request->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
-                    <td><button class="btn btn-danger" onclick="delete_data('{{route('manage_requests.customdestroy', $request->id)}}')"><i class="fas fa-trash-alt"></i></button></td>
-                </tr>
+    <ul class="nav nav-tabs">
+        @foreach($statusses as $status)
+            <li class="nav-item">
+                <a class="nav-link {{$status->id == 1?'active':'' }}" data-toggle="tab" href="#status_{{$status->id}}">{{$status->name}}</a>
+            </li>
         @endforeach
-    </tbody>
-</table>
+    </ul>
+
+<div class="tab-content">
+    @foreach($statusses as $status)
+        <div class="tab-pane {{$status->id == 1?'active':'' }}" id="status_{{$status->id}}">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Vaccin</th>
+                                <th scope="col">Aantal</th>
+                                <th scope="col">Aanvraag datum</th>
+                                <th scope="col">Gebruiker</th>
+                                <th scope="col">status</th>
+                                <th colspan="2" scope="col"><a href="{{ route('manage_requests.create')}}"><i style="color:#fff;" class="fas fa-plus"></i></th>
+                            </tr>
+                        </thead>
+                <tbody>
+                    @foreach($request_tabs[$status->id] as $request)
+                            <tr>
+                                <td>{{$request->vaccins->name}}, {{$request->vaccins->type}}</td>
+                                <td>{{$request->quantity}}</td>
+                                <td>{{$request->request_date}}</td>
+                                <td>{{$request->user->name}}</td>
+                                <td>{{$request->status->name}}</td>
+                                <td><a href="{{ route('manage_requests.edit', $request->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
+                                <td><button class="btn btn-danger" onclick="delete_data('{{route('manage_requests.customdestroy', $request->id)}}')"><i class="fas fa-trash-alt"></i></button></td>
+                            </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @endforeach
+</div>
+
 @endsection
 
 @section('javascript')

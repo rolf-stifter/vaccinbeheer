@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Stock;
 use App\User;
+use App\Vaccins;
 //use App\Http\Controllers\Controller;
 
 class manage_StockController extends Controller
@@ -13,10 +14,18 @@ class manage_StockController extends Controller
 
     public function index()
     {
+        $vaccins = Vaccins::all();
 
+        $total_vaccins = DB::table('stock')
+        ->select(DB::raw('SUM(stock.quantity) AS sum, (SUM(stock.quantity) - SUM(stock.quantityAfterVac)) AS sum_after, stock.vaccine_id, vaccins.name, vaccins.type '))
+        ->leftJoin('vaccins', 'stock.vaccine_id', '=' , 'vaccins.id')      
+        ->groupBy('stock.vaccine_id', 'vaccins.name', 'vaccins.type')
+        ->get();
+
+        //dd($total_vaccins);
         $stock_lines = Stock::with('user', 'vaccins')->get();
 
-        return view('manage/stock/index', compact('stock_lines'));
+        return view('manage/stock/index', compact('stock_lines', 'vaccins', 'total_vaccins'));
     }
 
     /**
@@ -27,8 +36,9 @@ class manage_StockController extends Controller
     public function create()
     {
         $users = User::all();
-
-        return view('manage/stock/create', compact('users'));
+        $vaccins = Vaccins::all();
+        
+        return view('manage/stock/create', compact('users', 'vaccins'));
     }
 
     /**
@@ -42,7 +52,7 @@ class manage_StockController extends Controller
         $request->validate([
             'isUsed' => 'required|integer',
             'user_id' => 'required',
-            'productName' => 'required',
+            'vaccine_id' => 'required|integer',
             'quantity' => 'required|integer',
             'quantityAfterVac' => 'required|integer'
         ]);
@@ -50,13 +60,13 @@ class manage_StockController extends Controller
         $stock_lines = new Stock([
             'isUsed' => $request->get('isUsed'),
             'user_id' => $request->get('user_id'),
-            'productName' => $request->get('productName'),
+            'vaccine_id' => $request->get('vaccine_id'),
             'quantity' => $request->get('quantity'),
             'quantityAfterVac' => $request->get('quantityAfterVac')
         ]);
         
         $stock_lines->save();
-        return redirect('manage_stock')->with('success', 'product is toegevoegd');
+        return redirect('manage_stock')->with('success', 'Vaccin is toegevoegd');
     }
 
     /**
@@ -79,9 +89,10 @@ class manage_StockController extends Controller
     public function edit($id)
     {
         $users = User::all();
+        $vaccins = Vaccins::all();
         $stock_lines = Stock::find($id);
 
-        return view('manage/stock/edit', compact('stock_lines', 'users'));
+        return view('manage/stock/edit', compact('stock_lines', 'users', 'vaccins'));
     }
 
     /**
@@ -96,19 +107,20 @@ class manage_StockController extends Controller
         $request->validate([
             'isUsed' => 'required|integer',
             'user_id' => 'required|exists:users,id',
-            'productName' => 'required',
+            'vaccine_id' => 'required|integer',
             'quantity' => 'required|integer',
             'quantityAfterVac' => 'required|integer'
         ]);
 
         $stock_lines = Stock::find($id);
             $stock_lines->isUsed = $request->get('isUsed');
-            $stock_lines->productName = $request->get('productName');
+            $stock_lines->user_id = $request->get('user_id');
+            $stock_lines->vaccine_id = $request->get('vaccine_id');
             $stock_lines->quantity = $request->get('quantity');
             $stock_lines->quantityAfterVac =  $request->get('quantityAfterVac');
             $stock_lines->save();
 
-        return redirect('manage_stock')->with('success', 'Aanvraag aangepast');
+        return redirect('manage_stock')->with('success', 'Vaccin is aangepast');
     }
 
     /**
@@ -123,6 +135,6 @@ class manage_StockController extends Controller
         $stock_lines = Stock::find($id);
         $stock_lines->delete();
 
-        return redirect('manage_stock')->with('success', 'Aanvraag verwijdert');
+        return redirect('manage_stock')->with('success', 'Vaccin is verwijdert');
     }
 }

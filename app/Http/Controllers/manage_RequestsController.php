@@ -6,6 +6,9 @@ use App\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Status;
+use App\Vaccins;
+use Illuminate\Foundation\Auth\User;
 
 //use Illuminate\Support\Facades\Request;
 
@@ -18,10 +21,14 @@ class manage_RequestsController extends Controller
      */
     public function index()
     {
+        $statusses = Status::all();
+        $request_tabs = [];
 
-        $requests = Requests::with('vaccins', 'user')->get();
-        
-        return view('manage/requests/index', compact('requests'));
+        foreach($statusses as $status){
+            $request_tabs[$status->id] = Requests::get_data_for_request_tabs($status->id);
+        }
+        //dd($request_tabs);
+        return view('manage/requests/index', compact('request_tabs', 'statusses'));
     }
 
     /**
@@ -31,8 +38,11 @@ class manage_RequestsController extends Controller
      */
     public function create()
     {
-        
-        return view('manage/requests/create');
+        $vaccins = Vaccins::all();
+        $users = User::all();
+        $statusses = Status::all();
+
+        return view('manage/requests/create', compact('users', 'vaccins', 'statusses'));
     }
 
     /**
@@ -47,6 +57,7 @@ class manage_RequestsController extends Controller
             'vaccine_id' => 'required|integer',
             'quantity' => 'required|integer',
             'request_date' => 'required|date',
+            'user_id' => 'required|integer',
             'status_id' => 'required'
         ]);
 
@@ -55,7 +66,8 @@ class manage_RequestsController extends Controller
             'vaccine_id' => $request->get('vaccine_id'),
             'quantity' => $request->get('quantity'),
             'request_date' => $request->get('request_date'),
-            'status_id' => $request->get('status')
+            'user_id' => $request->get('user_id'),
+            'status_id' => $request->get('status_id')
         ]);
         
         $request->save();
@@ -83,12 +95,11 @@ class manage_RequestsController extends Controller
     {
 
         $requests = Requests::findOrFail($id);
+        $statusses = Status::all();
+        $vaccins = Vaccins::all();
+        $users = User::all();
 
-        if(Auth::id() != $requests->user_id){
-            return redirect('/manage_requests');
-        }
-
-        return view('manage/requests/edit', compact('requests'));
+        return view('manage/requests/edit', compact('requests', 'statusses', 'vaccins', 'users'));
     }
 
     /**
@@ -104,17 +115,19 @@ class manage_RequestsController extends Controller
             'vaccine_id' => 'required|integer',
             'quantity' => 'required|integer',
             'request_date' => 'required|date',
-            'status' => 'required'
+            'user_id' => 'required|integer',
+            'status_id' => 'required|integer'
         ]);
 
         $requests = Requests::find($id);
             $requests->vaccine_id = $request->get('vaccine_id');
             $requests->quantity = $request->get('quantity');
-            $requests->request_date = $request->get('request_date');  
-            $requests->status =  $request->get('status');
+            $requests->request_date = $request->get('request_date');
+            $requests->user_id = $request->get('user_id');
+            $requests->status_id =  $request->get('status_id');
             $requests->save();
 
-        return redirect('/manage_requests')->with('success', 'Aanvraag aangepast');
+        return redirect('/manage_requests')->with('success', 'Aanvraag is aangepast');
     }
 
     /**
@@ -126,12 +139,8 @@ class manage_RequestsController extends Controller
     public function destroy($id)
     {
         $requests = Requests::find($id);
-
-        if(Auth::id() != $requests->user_id){
-            return redirect('/manage_requests');
-        }
         $requests->delete();
 
-        return redirect('/manage_requests')->with('success', 'Aanvraag verwijdert');
+        return redirect('/manage_requests')->with('success', 'Aanvraag is verwijdert');
     }
 }
