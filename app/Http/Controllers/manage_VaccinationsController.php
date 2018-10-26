@@ -17,13 +17,16 @@ class manage_VaccinationsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $schools = Schools::all();
+        $vaccins = Vaccins::all();
+        $users = User::all();
 
-        $vaccinations_finished = Vaccinations::get_finished_vaccinations();
-        $vaccinations_planned = Vaccinations::get_planned_vaccinations();
+        $vaccinations_finished = Vaccinations::get_finished_vaccinations($request);
+        $vaccinations_planned = Vaccinations::get_planned_vaccinations($request);
 
-        return view('manage/vaccinations/index', compact('vaccinations_finished', 'vaccinations_planned'));
+        return view('manage/vaccinations/index', compact('vaccinations_finished', 'vaccinations_planned', 'schools', 'users', 'vaccins', 'request'));
     }
 
     /**

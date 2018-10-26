@@ -12,9 +12,10 @@ use App\Vaccins;
 class manage_StockController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
         $vaccins = Vaccins::all();
+        $users = User::all();
 
         $total_vaccins = DB::table('stock')
         ->select(DB::raw('SUM(stock.quantity) AS sum, (SUM(stock.quantity) - SUM(stock.quantityAfterVac)) AS sum_after, stock.vaccine_id, vaccins.name, vaccins.type '))
@@ -23,9 +24,21 @@ class manage_StockController extends Controller
         ->get();
 
         //dd($total_vaccins);
-        $stock_lines = Stock::with('user', 'vaccins')->get();
+        //dd($request);
 
-        return view('manage/stock/index', compact('stock_lines', 'vaccins', 'total_vaccins'));
+        $where = [];
+        if($request->get('vaccine_id')){
+            $where[] = ['vaccine_id' ,'=' , $request->get('vaccine_id')];
+
+
+        }
+        if($request->get('user_id'))
+            $where[] = ['user_id' ,'=' , $request->get('user_id')];
+
+        $stock_lines = Stock::with('vaccins', 'user')->where($where)
+            ->get();
+
+        return view('manage/stock/index', compact('stock_lines', 'vaccins', 'total_vaccins', 'users', 'request'));
     }
 
     /**
@@ -137,4 +150,6 @@ class manage_StockController extends Controller
 
         return redirect('manage_stock')->with('success', 'Vaccin is verwijdert');
     }
+
+
 }

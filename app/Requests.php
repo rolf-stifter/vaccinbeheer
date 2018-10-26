@@ -29,10 +29,21 @@ class Requests extends Model
         return $this->belongsTo('App\Status');
     }
 
-    public static function get_data_for_request_tabs($status)
+    public static function get_data_for_request_tabs($status, $request)
     {
+        $where = [];
+
+        if($request->get('vaccine_id')){
+            $where[] = ['vaccine_id' ,'=' , $request->get('vaccine_id')];
+        }
+        
+        if($request->get('user_id')){
+            $where[] = ['user_id', '=', $request->get('user_id')];
+        }
+
         $requests = Requests::with('vaccins', 'user')->where([
-            ['status_id', '=',$status],  
+            ['status_id', '=', $status],
+            [$where]  
         ])
         ->get();
 

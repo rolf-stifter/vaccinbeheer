@@ -13,7 +13,13 @@
 
 <div class="container bg-white shadow">
         <div class="pb-2 mt-4 mb-2 border-bottom">
-            <h1>Beheer Vaccinaties</h1>
+            <h1>Beheer Vaccinaties
+                <p style="float:right">
+                    <button  type="button" class="btn btn-info" data-toggle="modal" data-target="#search_vaccinations">
+                            <i class="fas fa-search fa-lg"></i>
+                    </button>
+                </p>
+            </h1>
         </div>
         <ul class="nav nav-tabs">
             <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#gepland">Gepland</a></li>
@@ -90,6 +96,56 @@
         </div>
 </div>
 
+<div class="modal" id="search_vaccinations">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Specifiek zoeken</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                <form method="GET" action="{{route('manage_vaccinations.index')}}">
+                        
+                <!-- Modal body -->
+                    <div class="modal-body">
+                            <div class="form-group">
+                                <label>Vaccin:</label>
+                                <select name="vaccine_id" class="form-control">
+                                    <option value=""> Alle Vaccins</option>
+                                    @foreach($vaccins as $vaccin)
+                                        <option value="{{$vaccin->id}}" {{$request->get('vaccine_id')==$vaccin->id?'selected':''}}> {{$vaccin->type}}, {{$vaccin->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Gebruiker:</label>
+                                <select name="user_id" class="form-control">
+                                    <option value=""> Alle Gebruikers</option>
+                                    @foreach($users as $user)
+                                        <option value="{{$user->id}}" {{$request->get('user_id')==$user->id?'selected':''}}>{{$user->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>School:</label>
+                                <select name="school_id" class="form-control">
+                                    <option value=""> Alle Scholen</option>
+                                    @foreach($schools as $school)
+                                        <option value="{{$school->id}}" {{$request->get('school_id')==$school->id?'selected':''}}>{{$school->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                
+                <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <input type="submit" value="Zoeken" class="btn btn-primary mr-auto">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 @endsection
 

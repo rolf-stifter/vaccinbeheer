@@ -10,8 +10,6 @@ use App\Status;
 use App\Vaccins;
 use Illuminate\Foundation\Auth\User;
 
-//use Illuminate\Support\Facades\Request;
-
 class manage_RequestsController extends Controller
 {
     /**
@@ -19,16 +17,20 @@ class manage_RequestsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $statusses = Status::all();
         $request_tabs = [];
 
+        $vaccins = Vaccins::all();
+        $users = User::all();
+
         foreach($statusses as $status){
-            $request_tabs[$status->id] = Requests::get_data_for_request_tabs($status->id);
+            $request_tabs[$status->id] = Requests::get_data_for_request_tabs($status->id, $request);
         }
+        
         //dd($request_tabs);
-        return view('manage/requests/index', compact('request_tabs', 'statusses'));
+        return view('manage/requests/index', compact('request_tabs', 'statusses', 'vaccins', 'users', 'request'));
     }
 
     /**
