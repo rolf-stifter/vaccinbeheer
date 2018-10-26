@@ -29,12 +29,10 @@ class manage_StockController extends Controller
         $where = [];
         if($request->get('vaccine_id')){
             $where[] = ['vaccine_id' ,'=' , $request->get('vaccine_id')];
-
-
         }
-        if($request->get('user_id'))
+        if($request->get('user_id')){
             $where[] = ['user_id' ,'=' , $request->get('user_id')];
-
+        }
         $stock_lines = Stock::with('vaccins', 'user')->where($where)
             ->get();
 

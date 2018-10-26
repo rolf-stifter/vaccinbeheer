@@ -111,7 +111,7 @@
             <!-- Modal footer -->
                 <div class="modal-footer">
                     <input type="submit" value="Zoeken" class="btn btn-primary mr-auto">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Sluiten</button>
                 </div>
             </form>
         </div>
