@@ -12,7 +12,8 @@ class Vaccinations extends Model
         'school_class',
         'vaccine_id',
         'user_id',
-        'quantity'
+        'quantity',
+        'definitive'
     ];
 
     public function vaccins()

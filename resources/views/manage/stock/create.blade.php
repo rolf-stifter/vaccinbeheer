@@ -33,7 +33,7 @@
             </select>
         </div>
         <div class="form-group">
-            <label>Product Naam:</label>
+            <label>Vaccin:</label>
             <select name="vaccine_id" class="form-control">
                 @foreach($vaccins as $vaccin)
                     <option value="{{$vaccin->id}}"> {{$vaccin->type}}, {{$vaccin->name}} </option>

@@ -31,8 +31,7 @@ Route::get('/requests/destroy/{id}', 'requestsController@destroy')->middleware('
 Route::resource('vaccinations', 'VaccinationsController')->middleware('auth');
 Route::get('/vaccinations/edit/{id}', 'VaccinationsController@edit')->middleware('auth');
 Route::get('/vaccinations/destroy/{id}', 'VaccinationsController@destroy')->middleware('auth')->name('vaccinations.customdestroy');
-//Route::get('/vaccinations/gepland', 'VaccinationsController@index');
-//Route::get('/vaccinations/voorbij', 'VaccinationsController@index');
+Route::get('/vaccinations/definitive_vaccination/{id}', 'VaccinationsController@definitive_vaccination')->middleware('auth')->name('vaccinations.definitive_vaccination');
 
 //Routes for manage_stock controller
 Route::resource('manage_stock', 'manage_StockController')->middleware('auth');
@@ -54,7 +53,7 @@ Route::resource('vaccins', 'VaccinsController')->middleware('auth');
 Route::get('/vaccins/edit/{id}', 'VaccinsController@edit')->middleware('auth');
 Route::get('/vaccins/destroy/{id}', 'VaccinsController@destroy')->middleware('auth')->name('vaccins.customdestroy');
 
-//routes for Vaccins controller
+//routes for Schools controller
 Route::resource('schools', 'SchoolsController')->middleware('auth');
 Route::get('/schools/edit/{id}', 'SchoolsController@edit')->middleware('auth');
 Route::get('/schools/destroy/{id}', 'SchoolsController@destroy')->middleware('auth')->name('schools.customdestroy');

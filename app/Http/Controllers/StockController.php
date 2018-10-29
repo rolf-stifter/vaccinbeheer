@@ -74,7 +74,7 @@ class StockController extends Controller
     public function edit($id)
     {
 
-        $stock_lines = Stock::find($id);
+        $stock_lines = Stock::findOrFail($id);
 
         return view('stock/edit', compact('stock_lines'));
     }

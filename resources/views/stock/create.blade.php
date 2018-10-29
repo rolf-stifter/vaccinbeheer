@@ -25,7 +25,7 @@
             </select>
         </div>
         <div class="form-group">
-            <label>Product Naam:</label>
+            <label>Vaccin:</label>
             <input type="text" class="form-control" name="productName">
         </div>
         <div class="form-group">

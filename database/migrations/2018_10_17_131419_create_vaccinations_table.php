@@ -20,6 +20,7 @@ class CreateVaccinationsTable extends Migration
             $table->string('school_class');
             $table->integer('vaccine_id');
             $table->integer('quantity');
+            $table->integer('definitive');
             $table->timestamps();
         });
     }

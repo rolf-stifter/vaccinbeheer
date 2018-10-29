@@ -32,22 +32,32 @@
                             <th>Klas</th>
                             <th>Vaccin</th>
                             <th>Aantal</th>
-                            <th colspan="2" scope="col"><a href="{{ route('vaccinations.create')}}"><i style="color:#fff;" class="fas fa-plus"></i></th>
+                            <th colspan="3" scope="col"><a href="{{ route('vaccinations.create')}}"><i style="color:#fff;" class="fas fa-plus"></i></th>
                         </tr>
                     </thead>
 
             <tbody>
                     @foreach($vaccinations_planned as $vaccination)
                         @if(Auth::id() == $vaccination->user_id)
-                            <tr>
+                            @if($vaccination->definitive)
+                                <tr style="background-color:#d4edda">
+                            @else    
+                                <tr>
+                            @endif
                                 <td>{{ $vaccination->vaccination_date }}</td>
                                 <td>{{ $vaccination->schools->name}}</td>
                                 <td>{{ $vaccination->school_class}}</td>
                                 <td>{{ $vaccination->vaccins->type}}, {{$vaccination->vaccins->name}}</td>
                                 <td>{{ $vaccination->quantity}}</td>
-                                <td><a href="{{ route('vaccinations.edit', $vaccination->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
-                                <td><button class="btn btn-danger" onclick="delete_data('{{route('vaccinations.customdestroy', $vaccination->id)}}')"><i class="fas fa-trash-alt"></i></button>
-                                
+                                @if(!$vaccination->definitive)
+                                    <td>
+                                        <a href="{{ route('vaccinations.edit', $vaccination->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a>
+                                        <button class="btn btn-danger" onclick="delete_data('{{route('vaccinations.customdestroy', $vaccination->id)}}')"><i class="fas fa-trash-alt"></i></button>
+                                        <button class="btn btn-success" onclick="add_definitive('{{route('vaccinations.definitive_vaccination', $vaccination->id)}}')"><i class="fas fa-arrow-right"></i>
+                                    </td>
+                                @else
+                                    <td><i>Status: Definitief</i></td>
+                                @endif
                             </tr>
                         @endif
                     @endforeach
@@ -68,22 +78,30 @@
                                 <th>Klas</th>
                                 <th>Vaccin</th>
                                 <th>Aantal</th>
-                                <th colspan="2" scope="col"><a href="{{ route('vaccinations.create')}}"><i style="color:#fff;" class="fas fa-plus"></i></th>
+                                <!--<th colspan="3" scope="col"><a href="{{ route('vaccinations.create')}}"><i style="color:#fff;" class="fas fa-plus"></i></th>-->
                             </tr>
                         </thead>
 
                 <tbody>
                         @foreach($vaccinations_finished as $vaccination)
                             @if(Auth::id() == $vaccination->user_id)
-                                <tr>
+                                @if($vaccination->definitive)
+                                    <tr style="background-color:#d4edda">
+                                @else    
+                                    <tr>
+                                @endif
                                     <td>{{ $vaccination->vaccination_date }}</td>
                                     <td>{{ $vaccination->schools->name}}</td>
                                     <td>{{ $vaccination->school_class}}</td>
                                     <td>{{ $vaccination->vaccins->type}}, {{$vaccination->vaccins->name}}</td>
                                     <td>{{ $vaccination->quantity}}</td>
-                                    <td><a href="{{ route('vaccinations.edit', $vaccination->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
-                                    <td><button class="btn btn-danger" onclick="delete_data('{{route('vaccinations.customdestroy', $vaccination->id)}}')"><i class="fas fa-trash-alt"></i></button>
-                                    
+                                    @if(!$vaccination->definitive)
+                                        <td>
+                                            <a href="{{ route('vaccinations.edit', $vaccination->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a>
+                                            <button class="btn btn-danger" onclick="delete_data('{{route('vaccinations.customdestroy', $vaccination->id)}}')"><i class="fas fa-trash-alt"></i></button>
+                                            <button class="btn btn-success" onclick="add_definitive('{{route('vaccinations.definitive_vaccination', $vaccination->id)}}')"><i class="fas fa-arrow-right"></i>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endif
                         @endforeach
@@ -114,6 +132,23 @@ function delete_data(url){
             location.replace(url);
         }
         })
+}
+
+function add_definitive(url){
+
+swal({
+    title: 'Bent u zeker?',
+    text: "Dit kan niet meer ongedaan gemaakt worden!",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#28a745',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Definitief maken'
+    }).then((result) => {
+    if (result.value) {
+        location.replace(url);
+    }
+    })
 }
 </script>
 @endsection

@@ -63,7 +63,7 @@ class VaccinationsController extends Controller
         ]);
         
         $vaccinations->save();
-        return redirect('/vaccinations')->with('success', 'Aanvraag is ingediend');
+        return redirect('/vaccinations')->with('success', 'Vacinatie is ingediend');
     }
 
     /**
@@ -122,7 +122,7 @@ class VaccinationsController extends Controller
             $vaccinations->quantity =  $request->get('quantity');
             $vaccinations->save();
 
-        return redirect('/vaccinations')->with('success', 'Aanvraag aangepast');
+        return redirect('/vaccinations')->with('success', 'Vaccinatie aangepast');
     }
 
     /**
@@ -133,7 +133,7 @@ class VaccinationsController extends Controller
      */
     public function destroy($id)
     {
-        $vaccinations = Vaccinations::find($id);
+        $vaccinations = Vaccinations::findOrFail($id);
 
         if(Auth::id() != $vaccinations->user_id){
             return redirect('/vaccinations');
@@ -141,6 +141,20 @@ class VaccinationsController extends Controller
 
         $vaccinations->delete();
 
-        return redirect('/vaccinations')->with('success', 'Aanvraag verwijdert');
+        return redirect('/vaccinations')->with('success', 'Vaccinatie verwijdert');
+    }
+
+    public function definitive_vaccination(Request $request, $id)
+    {
+        $vaccinations = Vaccinations::findOrFail($id);
+
+        if(Auth::id() != $vaccinations->user_id){
+            return redirect('/vaccinations');
+        }
+
+        $vaccinations->definitive = 1;
+        $vaccinations->save();
+        
+        return redirect('/vaccinations')->with('success', 'Vaccinatie gewijzigd naar definitieve status');
     }
 }

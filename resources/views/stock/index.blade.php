@@ -20,8 +20,8 @@
     <table class="table table-bordered">
             <thead class="thead-dark">
                 <tr>
-                    <th>In gebruik</th>
-                    <th>Product naam</th>
+                    <th>In Gebruik</th>
+                    <th>Vaccin</th>
                     <th>Aantal</th>
                     <th>Aantal na vaccinaties</th>
                     <!--
