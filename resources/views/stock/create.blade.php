@@ -20,21 +20,21 @@
             @csrf
             <label>In gebruik:</label>
             <select name="isUsed" class="form-control">
-                <option value="1">Ja</option>
-                <option value="0">Neen</option>
+                <option value="1" {{old('isUsed') == 1? 'selected': ''}}>Ja</option>
+                <option value="0" {{old('isUsed') == 0? 'selected': ''}}>Neen</option>
             </select>
         </div>
         <div class="form-group">
             <label>Vaccin:</label>
-            <input type="text" class="form-control" name="productName">
+            <input type="text" class="form-control" value="{{ old('productName') }}" name="productName">
         </div>
         <div class="form-group">
             <label>Aantal:</label>
-            <input type="text" class="form-control" name="quantity">
+            <input type="text" class="form-control" value="{{ old('quantity') }}" name="quantity">
         </div>
         <div class="form-group">
             <label>Aantal na vaccinatie:</label>
-            <input type="text" class="form-control" name="quantityAfterVac">
+            <input type="text" class="form-control" value="{{ old('quantityAfterVac') }}" name="quantityAfterVac">
         </div>
         <div class="form-group">
             <input type="submit" value="Toevoegen" class="btn btn-primary">

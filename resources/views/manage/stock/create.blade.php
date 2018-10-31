@@ -20,15 +20,15 @@
             @csrf
             <label>In gebruik:</label>
             <select name="isUsed" class="form-control">
-                <option value="1">Ja</option>
-                <option value="0">Neen</option>
+                <option value="1" {{old('isUsed') == 1? 'selected': ''}}>Ja</option>
+                <option value="0" {{old('isUsed') == 0? 'selected': ''}}>Neen</option>
             </select>
         </div>
         <div class="form-group">
             <label>Gebruiker:</label>
             <select name="user_id" class="form-control">
                 @foreach($users as $user)
-                    <option value="{{$user->id}}"> {{$user->name}} </option>
+                    <option value="{{$user->id}}" {{old('user_id') == $user->id? 'selected': ''}}> {{$user->name}} </option>
                 @endforeach
             </select>
         </div>
@@ -36,18 +36,18 @@
             <label>Vaccin:</label>
             <select name="vaccine_id" class="form-control">
                 @foreach($vaccins as $vaccin)
-                    <option value="{{$vaccin->id}}"> {{$vaccin->type}}, {{$vaccin->name}} </option>
+                    <option value="{{$vaccin->id}}" {{old('vaccine_id') == $vaccin->id? 'selected': ''}}> {{$vaccin->type}}, {{$vaccin->name}} </option>
                 @endforeach
             </select>
         </div>
         <div class="form-group">
             <label>Aantal:</label>
-            <input type="text" class="form-control" name="quantity">
+            <input type="text" class="form-control" value="{{old('quantity')}}" name="quantity">
         </div>
         <!--
         <div class="form-group">
             <label>Aantal na vaccinatie:</label>
-            <input type="text" class="form-control" name="quantityAfterVac">
+            <input type="text" class="form-control"  name="quantityAfterVac">
         </div>
         -->
         <div class="form-group">

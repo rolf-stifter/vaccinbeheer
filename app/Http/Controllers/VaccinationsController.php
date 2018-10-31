@@ -52,13 +52,18 @@ class VaccinationsController extends Controller
     public function store(Request $request)
     {
         $vaccins = Vaccins::all();
+        $vaccins_user = DB::table('vaccins')
+                    ->select('vaccins.*', 'stock.quantity', 'stock.quantityAfterVac')
+                    ->leftJoin('stock','vaccins.id', 'stock.vaccine_id')
+                    ->where('user_id', Auth::id())
+                    ->first();
 
         $request->validate([
             'vaccination_date' => 'required',
             'school_id' => 'required',
             'school_class' => 'required',
             'vaccine_id' => 'required|integer',
-            'quantity' => 'required|integer'
+            'quantity' => "required|integer|max:$vaccins_user->quantity"
         ]);
 
         $vaccinations = new Vaccinations([

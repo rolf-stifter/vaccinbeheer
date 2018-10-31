@@ -21,13 +21,13 @@
             <label>Vaccin:</label>
            <select name="vaccine_id" class="form-control">
                 @foreach($vaccins as $vaccin)
-                    <option value="{{$vaccin->id}}"> {{$vaccin->type}}, {{$vaccin->name}} </option>
+                    <option value="{{$vaccin->id}}" {{old('vaccine_id') == $vaccin->id? 'selected': ''}}> {{$vaccin->type}}, {{$vaccin->name}} </option>
                 @endforeach
            </select>
         </div>
         <div class="form-group">
             <label>Aantal:</label>
-            <input type="text" class="form-control" name="quantity">
+            <input type="text" class="form-control" value="{{ old('quantity') }}" name="quantity">
         </div>
         <div class="form-group">
             <label>Datum aanvraag:</label>

@@ -21,23 +21,23 @@
             <label>Vaccin:</label>
             <select name="vaccine_id" class="form-control">
                 @foreach($vaccins as $vaccin)
-                    <option value="{{$vaccin->id}}"> {{$vaccin->type}}, {{$vaccin->name}}</option>
+                    <option value="{{$vaccin->id}}" {{old('vaccine_id') == $vaccin->id? 'selected': ''}}> {{$vaccin->type}}, {{$vaccin->name}}</option>
                 @endforeach
             </select>
         </div>
         <div class="form-group">
             <label>Aantal:</label>
-            <input type="text" class="form-control" name="quantity">
+            <input type="text" class="form-control" value="{{old('quantity')}}" name="quantity">
         </div>
         <div class="form-group">
             <label>Datum aanvraag:</label>
-            <input type="date" class="form-control" name="request_date">
+            <input type="date" class="form-control" value="{{old('request_date')}}" name="request_date">
         </div>
         <div class="form-group">
                 <label>Gebruiker:</label>
                 <select name="user_id" class="form-control">
                     @foreach($users as $user)
-                        <option value="{{$user->id}}">{{$user->name}}</option>
+                        <option value="{{$user->id}}" {{old('user_id') == $user->id? 'selected': ''}}>{{$user->name}}</option>
                     @endforeach
                 </select>
             </div>
@@ -45,7 +45,7 @@
             <label>Status:</label>
             <select name="status_id" class="form-control">
                     @foreach($statusses as $status)
-                        <option value="{{$status->id}}">{{$status->name}}</option>
+                        <option value="{{$status->id}}" {{old('status_id') == $status->id? 'selected': ''}}>{{$status->name}}</option>
                     @endforeach
                 </select>
         </div>
