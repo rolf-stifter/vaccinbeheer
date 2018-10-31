@@ -81,7 +81,7 @@ class manage_StockController extends Controller
         }
         
         $stock_lines->save();
-        return redirect('manage_stock')->with('success', 'Vaccin is toegevoegd');
+        return redirect('manage_stock')->with('success', 'Vorraad is toegevoegd');
     }
 
     /**
@@ -133,7 +133,7 @@ class manage_StockController extends Controller
             $stock_lines->quantity = $request->get('quantity');
             $stock_lines->save();
 
-        return redirect('manage_stock')->with('success', 'Vaccin is aangepast');
+        return redirect('manage_stock')->with('success', 'Voorraad is aangepast');
     }
 
     /**
@@ -148,7 +148,7 @@ class manage_StockController extends Controller
         $stock_lines = Stock::find($id);
         $stock_lines->delete();
 
-        return redirect('manage_stock')->with('success', 'Vaccin is verwijdert');
+        return redirect('manage_stock')->with('success', 'Voorraad is verwijdert');
     }
 
     public function add_total_stock(Request $request)
