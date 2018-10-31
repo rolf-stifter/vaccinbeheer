@@ -31,7 +31,7 @@
         </div>
         <div class="form-group">
             <label>Datum aanvraag:</label>
-            <input type="date" class="form-control" name="request_date">
+            <input type="date" class="form-control" name="request_date" value="{{ date("Y-m-d") }}">
         </div>
         <div class="form-group">
             <input type="submit" value="Aanvragen" class="btn btn-primary">

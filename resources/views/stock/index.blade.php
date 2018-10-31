@@ -20,10 +20,10 @@
     <table class="table table-bordered">
             <thead class="thead-dark">
                 <tr>
-                    <th>In Gebruik</th>
+                    <th>In gebruik</th>
                     <th>Vaccin</th>
                     <th>Aantal</th>
-                    <th>Aantal na vaccinaties</th>
+                    <th>Aantal na geplande vaccinaties</th>
                     <!--
                         <th colspan="2" scope="col"><a href="{{ route('stock.create')}}"><i style="color:#fff;" class="fas fa-plus"></i></th>
                         -->

@@ -18,6 +18,8 @@ class CreateVaccinsTable extends Migration
             $table->string('name');
             $table->string('type');
             $table->integer('minimum_amount');
+            $table->integer('total_stock');
+            $table->integer('total_stock_after_vac');
             $table->integer('active');
             $table->timestamps();
         });

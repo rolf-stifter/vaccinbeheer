@@ -16,7 +16,7 @@
         <h1>Beheer Voorraad 
             <p style="float:right">
                 <button  type="button" class="btn btn-info" data-toggle="modal" data-target="#search_stock">
-                        <i class="fas fa-search fa-lg"></i>
+                    <i class="fas fa-search fa-lg"></i>
                 </button>
             </p>
         </h1>
@@ -29,7 +29,7 @@
                     <th>Vaccin</th>
                     <th>Aantal</th>
                     <th>Aantal na vaccinaties</th>
-                    <th colspan="2" scope="col"><a href="{{ route('manage_stock.create')}}"><i style="color:#fff;" class="fas fa-plus"></i></th>
+                    <th colspan="2" scope="col"><a href="{{ route('manage_stock.create')}}"><i style="color:#fff;" class="fas fa-plus"></i></a></th>
                 </tr>
             </thead>
 
@@ -40,17 +40,28 @@
                         <td>{{ $stock_line->vaccins->type}}, {{ $stock_line->vaccins->name}} </td>
                         <td>{{ $stock_line->quantity}}</td>
                         <td>{{ $stock_line->quantityAfterVac}}</td>
-                        <td><a href="{{ route('manage_stock.edit', $stock_line->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
-                        <td><button class="btn btn-danger" onclick="delete_data('{{route('manage_stock.customdestroy', $stock_line->id)}}')"><i class="fas fa-trash-alt"></i></button>
+                        <td>
+                            <a href="{{ route('manage_stock.edit', $stock_line->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a>
+                            <button class="btn btn-danger" onclick="delete_data('{{route('manage_stock.customdestroy', $stock_line->id)}}')"><i class="fas fa-trash-alt"></i></button>
+                        </td>
                     </tr>
                     @endforeach
+                    <div style="display:flex; justify-content:center;align-items:center;">
+                        {{ $stock_lines->links() }}
+                    </div>
             </tbody>
         </table>
     </div>
 </div>
     <div class="container bg-white shadow">
             <div class="pb-2 mt-4 mb-2 border-bottom">
-                <h1>Totaal Voorraad</h1>
+                <h1>Totaal Voorraad
+                    <p style="float:right">
+                        <button  type="button" class="btn btn-info" data-toggle="modal" data-target="#add_total_stock">
+                            <i class="fas fa-syringe fa-lg"></i>
+                        </button>
+                    </p>
+                </h1>
             </div>
 
             <div class="table-responsive">
@@ -58,17 +69,19 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th>Vaccin</th>
-                                    <th>Aantal</th>
+                                    <th>Totaal aantal</th>
+                                    <th>Aantal uitgedeeld</th>
                                     <th>Aantal na vaccinaties</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                @foreach($total_vaccins as $vaccin)
+                                @foreach($vaccins as $vaccin)
                                     <tr>
-                                        <td>{{ $vaccin->type}}, {{ $vaccin->name}} </td>
-                                        <td>{{ $vaccin->sum}}</td>
-                                        <td>{{ $vaccin->sum_after}}</td>
+                                        <td>{{ $vaccin->type }}, {{ $vaccin->name }}</td>
+                                        <td>{{ $vaccin->total_stock }}</td>
+                                        <td>{{ $vaccin->total_stock_distributed }}</td>
+                                        <td>{{ $vaccin->total_stock_after_vac }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -111,6 +124,41 @@
             <!-- Modal footer -->
                 <div class="modal-footer">
                     <input type="submit" value="Zoeken" class="btn btn-primary mr-auto">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Sluiten</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="add_total_stock">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Voorraad toevoegen</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <form method="POST" action="{{ route('manage_stock.add') }}">
+                    @csrf 
+            <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Vaccin:</label>
+                        <select name="vaccine_id" class="form-control">
+                            @foreach($vaccins as $vaccin)
+                                <option value="{{$vaccin->id}}"> {{$vaccin->type}}, {{$vaccin->name}} </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Aantal:</label>
+                        <input type="text" class="form-control" name="quantity">
+                    </div>
+                </div>
+            <!-- Modal footer -->
+                <div class="modal-footer">
+                    <input type="submit" value="Toevoegen" class="btn btn-primary mr-auto">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Sluiten</button>
                 </div>
             </form>

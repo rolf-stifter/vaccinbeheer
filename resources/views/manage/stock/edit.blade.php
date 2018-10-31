@@ -45,10 +45,12 @@
             <label>Aantal:</label>
             <input type="text" class="form-control" name="quantity" value={{$stock_lines->quantity}}>
         </div>
+        <!--
         <div class="form-group">
             <label>Aantal na vaccinatie:</label>
             <input type="text" class="form-control" name="quantityAfterVac" value={{$stock_lines->quantityAfterVac}}>
         </div>
+        -->
         <div class="form-group">
             <input type="submit" value="Wijzig" class="btn btn-primary">
         </div>

@@ -37,7 +37,7 @@
             <label>Vaccin:</label>
             <select name="vaccine_id" class="form-control">
                     @foreach($vaccins as $vaccin)
-                        <option value="{{$vaccin->id}}"> {{$vaccin->type}}, {{$vaccin->name}} </option>
+                        <option value="{{$vaccin->id}}"> {{$vaccin->type}}, {{$vaccin->name}} (Aantal: {{$vaccin->quantityAfterVac}})</option>
                     @endforeach
                </select>
         </div>

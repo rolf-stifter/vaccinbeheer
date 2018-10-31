@@ -52,8 +52,10 @@
                                         <td>{{ $vaccination->vaccins->type}}, {{$vaccination->vaccins->name}}</td>
                                         <td>{{ $vaccination->user->name}}</td>
                                         <td>{{ $vaccination->quantity}}</td>
-                                        <td><a href="{{ route('manage_vaccinations.edit', $vaccination->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
-                                        <td><button class="btn btn-danger" onclick="delete_data('{{route('manage_vaccinations.customdestroy', $vaccination->id)}}')"><i class="fas fa-trash-alt"></i></button>
+                                        <td>
+                                            <a href="{{ route('manage_vaccinations.edit', $vaccination->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a>
+                                            <button class="btn btn-danger" onclick="delete_data('{{route('manage_vaccinations.customdestroy', $vaccination->id)}}')"><i class="fas fa-trash-alt"></i></button>
+                                        </td>
                                     </tr>
                             @endforeach
                         </tbody>
@@ -86,8 +88,10 @@
                                         <td>{{ $vaccination->vaccins->type}}, {{$vaccination->vaccins->name}}</td>
                                         <td>{{ $vaccination->user->name}}</td>
                                         <td>{{ $vaccination->quantity}}</td>
-                                        <td><a href="{{ route('manage_vaccinations.edit', $vaccination->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
-                                        <td><button class="btn btn-danger" onclick="delete_data('{{route('manage_vaccinations.customdestroy', $vaccination->id)}}')"><i class="fas fa-trash-alt"></i></button>
+                                        <td>
+                                            <a href="{{ route('manage_vaccinations.edit', $vaccination->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a>
+                                            <button class="btn btn-danger" onclick="delete_data('{{route('manage_vaccinations.customdestroy', $vaccination->id)}}')"><i class="fas fa-trash-alt"></i></button>
+                                        </td>
                                     </tr>
                             @endforeach
                         </tbody>

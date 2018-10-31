@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
 use App\User;
 
 class UsersController extends Controller
@@ -15,7 +16,7 @@ class UsersController extends Controller
     public function index()
     {
         $users = User::all();
-        
+
         return view('manage/users/index', compact('users'));
     }
 
@@ -26,7 +27,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::all();
+        return view('manage/users/create', compact('users'));
     }
 
     /**
@@ -37,7 +39,27 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email'
+        ]);
+
+        $users = new User([
+            'name' => $request->get('name'),
+            'email' => $request->get('email')
+        ]);
+        $users->save();
+
+        $response = $this->broker()->sendResetLink(
+            $request->only('email')
+        );
+
+        return redirect('/users')->with('success', 'Gebruiker is toegevoegd');
+    }
+
+    public function broker()
+    {
+        return Password::broker();
     }
 
     /**
@@ -59,7 +81,9 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $users = User::findOrFail($id);
+
+        return view('manage/users/edit', compact('users'));
     }
 
     /**
@@ -71,7 +95,17 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+        ]);
+
+        $users = User::findOrFail($id);
+            $users->name = $request->get('name');
+            $users->email = $request->get('email');
+            $users->save();
+
+        return redirect('/users')->with('success', 'Gebruiker is aangepast');
     }
 
     /**
@@ -82,6 +116,12 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $users = User::findOrFail($id);
+        
+        $users->active = 0;
+        $users->save();
+
+        return redirect('/users')->with('success', 'Gebruiker is verwijdert');
+
     }
 }

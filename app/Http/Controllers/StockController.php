@@ -12,6 +12,7 @@ class StockController extends Controller
 
     public function index()
     {
+        Stock::calc_user();
 
         $stock_lines = Stock::with('vaccins')->get();
 

@@ -29,8 +29,10 @@
             @foreach($schools as $school)
                     <tr>
                         <td>{{ $school->name}}</td>
-                        <td><a href="{{ route('schools.edit', $school->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
-                        <td><button class="btn btn-danger" onclick="delete_data('{{route('schools.customdestroy', $school->id)}}')"><i class="fas fa-trash-alt"></i></button> 
+                        <td>
+                            <a href="{{ route('schools.edit', $school->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a>
+                            <button class="btn btn-danger" onclick="delete_data('{{route('schools.customdestroy', $school->id)}}')"><i class="fas fa-trash-alt"></i></button>
+                        </td>
                     </tr>
             @endforeach
     </tbody>

@@ -21,7 +21,7 @@
                     <th scope="col">Vaccin</th>
                     <th scope="col">Aantal</th>
                     <th scope="col">Aanvraag datum</th>
-                    <th scope="col">status</th>
+                    <th scope="col">Status</th>
                     <th colspan="2" scope="col"><a href="{{ route('requests.create')}}"><i style="color:#fff;" class="fas fa-plus"></i></th>
                 </tr>
             </thead>
@@ -33,8 +33,10 @@
                     <td>{{$request->quantity}}</td>
                     <td>{{$request->request_date}}</td>
                     <td>{{$request->status->name}}</td>
-                    <td><a href="{{ route('requests.edit', $request->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
-                    <td><button class="btn btn-danger" onclick="delete_data('{{route('requests.customdestroy', $request->id)}}')"><i class="fas fa-trash-alt"></i></button></td>
+                    <td>
+                        <a href="{{ route('requests.edit', $request->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a>
+                        <button class="btn btn-danger" onclick="delete_data('{{route('requests.customdestroy', $request->id)}}')"><i class="fas fa-trash-alt"></i></button>
+                    </td>
                 </tr>
             @endif
         @endforeach

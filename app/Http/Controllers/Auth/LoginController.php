@@ -52,4 +52,13 @@ class LoginController extends Controller
 
         return $this->loggedOut($request) ?: redirect('/login');
     }
+
+
+    protected function validateLogin(Request $request)
+    {
+        $this->validate($request, [
+            $this->username() => 'required|string',
+            'password' => 'required|string'
+        ]);
+    }
 }

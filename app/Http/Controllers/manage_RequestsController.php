@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Status;
+use App\Stock;
 use App\Vaccins;
 use Illuminate\Foundation\Auth\User;
 
@@ -121,13 +122,35 @@ class manage_RequestsController extends Controller
             'status_id' => 'required|integer'
         ]);
 
-        $requests = Requests::find($id);
+        $requests = Requests::findOrFail($id);
             $requests->vaccine_id = $request->get('vaccine_id');
             $requests->quantity = $request->get('quantity');
             $requests->request_date = $request->get('request_date');
             $requests->user_id = $request->get('user_id');
             $requests->status_id =  $request->get('status_id');
             $requests->save();
+
+            if($requests->status_id == 3){
+                if(
+                    $stock_lines = Stock::where([
+                        ['user_id', '=', $requests->user_id],
+                        ['vaccine_id', '=',  $requests->vaccine_id]
+                    ])
+                    ->first()
+                ){
+                    $stock_lines->quantity = $stock_lines->quantity + $request->get('quantity');
+                    $stock_lines->quantityAfterVac = $stock_lines->quantityAfterVac + $request->get('quantity');
+                } else {
+                    $stock_lines = new Stock([
+                        'isUsed' => 1,
+                        'user_id' => $request->get('user_id'),
+                        'vaccine_id' => $request->get('vaccine_id'),
+                        'quantity' => $request->get('quantity'),
+                        'quantityAfterVac' => $request->get('quantity'),
+                    ]);
+                }
+                $stock_lines->save();
+            }
 
         return redirect('/manage_requests')->with('success', 'Aanvraag is aangepast');
     }
@@ -140,7 +163,7 @@ class manage_RequestsController extends Controller
      */
     public function destroy($id)
     {
-        $requests = Requests::find($id);
+        $requests = Requests::findOrFail($id);
         $requests->delete();
 
         return redirect('/manage_requests')->with('success', 'Aanvraag is verwijdert');

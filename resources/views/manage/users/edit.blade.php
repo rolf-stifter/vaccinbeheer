@@ -15,14 +15,19 @@
     </div>
 
 
-    <form method="POST" action="{{ route('schools.store') }}">
+    <form method="POST" action="{{ route('users.update', $users->id) }}">
+        @method('PATCH')
         @csrf
         <div class="form-group">
-            <label>Naam:</label>
-            <input type="text" name="name" class="form-control">
+            <label>Gebruiker:</label>
+            <input type="text" class="form-control" name="name" value="{{$users->name}}">
         </div>
         <div class="form-group">
-            <input type="submit" value="Toevoegen" class="btn btn-primary">
+                <label>Email:</label>
+                <input type="text" class="form-control" name="email" value="{{$users->email}}">
+            </div>
+        <div class="form-group">
+            <input type="submit" value="Wijzig" class="btn btn-primary">
         </div>
     </form>
 @endsection

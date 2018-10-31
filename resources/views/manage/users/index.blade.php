@@ -25,12 +25,16 @@
             </thead>
     <tbody>
         @foreach($users as $user)
+            @if($user->active)
                 <tr>
                     <td>{{$user->name}}</td>
                     <td>{{$user->email}}</td>
-                    <td><a href="{{ route('users.edit', $user->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></td>
-                    <td><button class="btn btn-danger" onclick="delete_data('{{route('users.customdestroy', $user->id)}}')"><i class="fas fa-trash-alt"></i></button></td>
+                    <td>
+                        <a href="{{ route('users.edit', $user->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a>
+                        <button class="btn btn-danger" onclick="delete_data('{{route('users.customdestroy', $user->id)}}')"><i class="fas fa-trash-alt"></i></button>
+                    </td>
                 </tr>
+            @endif
         @endforeach
     </tbody>
 </table>
@@ -43,7 +47,7 @@ function delete_data(url){
 
     swal({
         title: 'Bent u zeker?',
-        text: "Dit kan niet meer ongedaan gemaakt worden!",
+        text: "Deze gebruiker zal niet meer kunnen inloggen",
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#f44242',

@@ -33,4 +33,20 @@ class Stock extends Model
     {
         return $this->belongsTo('App\Vaccins', 'vaccine_id');
     }
+
+    public static function calc_user()
+    {
+        $stock_lines = Stock::all();
+        foreach($stock_lines as $stock_line){
+            $total_requested = Vaccinations::where([
+                ['vaccine_id', $stock_line->vaccine_id],
+                ['user_id', $stock_line->user_id],
+                ['definitive', 0]
+            ])
+            ->sum('quantity');
+
+            $stock_line->quantityAfterVac = $stock_line->quantity - $total_requested;
+            $stock_line->save();
+        }
+    }
 }

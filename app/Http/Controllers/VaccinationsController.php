@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Schools;
 use App\Vaccins;
+use App\Stock;
 
 class VaccinationsController extends Controller
 {
@@ -18,7 +19,7 @@ class VaccinationsController extends Controller
      */
     public function index()
     {
-
+        
         $vaccinations_finished = Vaccinations::get_finished_vaccinations_for_user(Auth::id());
         $vaccinations_planned = Vaccinations::get_planned_vaccinations_for_user(Auth::id());
 
@@ -33,8 +34,13 @@ class VaccinationsController extends Controller
     public function create()
     {
         $schools = Schools::all();
-        $vaccins = Vaccins::all();
-        return view('vaccinations/create', compact('schools', 'vaccins'));
+       
+        $vaccins = DB::table('vaccins')
+                    ->select('vaccins.*', 'stock.quantity', 'stock.quantityAfterVac')
+                    ->leftJoin('stock','vaccins.id', 'stock.vaccine_id')
+                    ->where('user_id', Auth::id())
+                    ->get();
+        return view('vaccinations/create', compact('schools', 'vaccins',  'stock_lines'));
     }
 
     /**
@@ -45,6 +51,8 @@ class VaccinationsController extends Controller
      */
     public function store(Request $request)
     {
+        $vaccins = Vaccins::all();
+
         $request->validate([
             'vaccination_date' => 'required',
             'school_id' => 'required',
@@ -63,6 +71,17 @@ class VaccinationsController extends Controller
         ]);
         
         $vaccinations->save();
+
+        /*
+        $stock_lines = Stock::where([
+            ['user_id', '=', Auth::id()],
+            ['vaccine_id', '=',  $request->get('vaccine_id')]
+        ])
+        ->first();
+
+        $stock_lines->quantityAfterVac = $stock_lines->quantity - $vaccinations->quantity;
+        $stock_lines->save();
+        */
         return redirect('/vaccinations')->with('success', 'Vacinatie is ingediend');
     }
 
@@ -120,8 +139,17 @@ class VaccinationsController extends Controller
             $vaccinations->school_class = $request->get('school_class');
             $vaccinations->vaccine_id =  $request->get('vaccine_id');
             $vaccinations->quantity =  $request->get('quantity');
-            $vaccinations->save();
 
+            $vaccinations->save();
+        /*
+        $stock_lines = Stock::where([
+            ['user_id', Auth::id()],
+            ['vaccine_id', $vaccinations->vaccine_id]
+        ])->first();
+            //dd($stock_lines);
+        $stock_lines->quantityAfterVac = $stock_lines->quantity - $vaccinations->quantity;
+        $stock_lines->save();
+        */
         return redirect('/vaccinations')->with('success', 'Vaccinatie aangepast');
     }
 
@@ -144,6 +172,9 @@ class VaccinationsController extends Controller
         return redirect('/vaccinations')->with('success', 'Vaccinatie verwijdert');
     }
 
+    /**
+     * Change vaccination to definitive and edit stock
+     */
     public function definitive_vaccination(Request $request, $id)
     {
         $vaccinations = Vaccinations::findOrFail($id);
@@ -154,6 +185,18 @@ class VaccinationsController extends Controller
 
         $vaccinations->definitive = 1;
         $vaccinations->save();
+
+        $stock_lines = Stock::where([
+            ['user_id', '=', Auth::id()],
+            ['vaccine_id', '=',  $vaccinations->vaccine_id]
+        ])
+        ->first();
+        $stock_lines->quantity = $stock_lines->quantity - $vaccinations->quantity;
+        $stock_lines->save();
+
+        $vaccins = Vaccins::where('id', $vaccinations->vaccine_id)->first();
+        $vaccins->total_stock = $vaccins->total_stock - $vaccinations->quantity;
+        $vaccins->save();
         
         return redirect('/vaccinations')->with('success', 'Vaccinatie gewijzigd naar definitieve status');
     }

@@ -14,17 +14,12 @@ class manage_StockController extends Controller
 
     public function index(Request $request)
     {
+        Stock::calc_user();
+        Vaccins::calc();
+        Vaccins::calc_distributed();
+        
         $vaccins = Vaccins::all();
         $users = User::all();
-
-        $total_vaccins = DB::table('stock')
-        ->select(DB::raw('SUM(stock.quantity) AS sum, (SUM(stock.quantity) - SUM(stock.quantityAfterVac)) AS sum_after, stock.vaccine_id, vaccins.name, vaccins.type '))
-        ->leftJoin('vaccins', 'stock.vaccine_id', '=' , 'vaccins.id')      
-        ->groupBy('stock.vaccine_id', 'vaccins.name', 'vaccins.type')
-        ->get();
-
-        //dd($total_vaccins);
-        //dd($request);
 
         $where = [];
         if($request->get('vaccine_id')){
@@ -34,7 +29,7 @@ class manage_StockController extends Controller
             $where[] = ['user_id' ,'=' , $request->get('user_id')];
         }
         $stock_lines = Stock::with('vaccins', 'user')->where($where)
-            ->get();
+        ->paginate(5);
 
         return view('manage/stock/index', compact('stock_lines', 'vaccins', 'total_vaccins', 'users', 'request'));
     }
@@ -65,16 +60,25 @@ class manage_StockController extends Controller
             'user_id' => 'required',
             'vaccine_id' => 'required|integer',
             'quantity' => 'required|integer',
-            'quantityAfterVac' => 'required|integer'
         ]);
-
-        $stock_lines = new Stock([
-            'isUsed' => $request->get('isUsed'),
-            'user_id' => $request->get('user_id'),
-            'vaccine_id' => $request->get('vaccine_id'),
-            'quantity' => $request->get('quantity'),
-            'quantityAfterVac' => $request->get('quantityAfterVac')
-        ]);
+        
+        if(
+            $stock_lines = Stock::where([
+                ['user_id', '=', $request->get('user_id')],
+                ['vaccine_id', '=',  $request->get('vaccine_id')]
+            ])
+            ->first()
+        ){
+            $stock_lines->quantity = $stock_lines->quantity + $request->get('quantity');
+        }else {
+            $stock_lines = new Stock([
+                'isUsed' => $request->get('isUsed'),
+                'user_id' => $request->get('user_id'),
+                'vaccine_id' => $request->get('vaccine_id'),
+                'quantity' => $request->get('quantity'),
+                'quantityAfterVac' => $request->get('quantity'),
+            ]);
+        }
         
         $stock_lines->save();
         return redirect('manage_stock')->with('success', 'Vaccin is toegevoegd');
@@ -120,7 +124,6 @@ class manage_StockController extends Controller
             'user_id' => 'required|exists:users,id',
             'vaccine_id' => 'required|integer',
             'quantity' => 'required|integer',
-            'quantityAfterVac' => 'required|integer'
         ]);
 
         $stock_lines = Stock::find($id);
@@ -128,7 +131,6 @@ class manage_StockController extends Controller
             $stock_lines->user_id = $request->get('user_id');
             $stock_lines->vaccine_id = $request->get('vaccine_id');
             $stock_lines->quantity = $request->get('quantity');
-            $stock_lines->quantityAfterVac =  $request->get('quantityAfterVac');
             $stock_lines->save();
 
         return redirect('manage_stock')->with('success', 'Vaccin is aangepast');
@@ -149,5 +151,13 @@ class manage_StockController extends Controller
         return redirect('manage_stock')->with('success', 'Vaccin is verwijdert');
     }
 
-
+    public function add_total_stock(Request $request)
+    {
+        $vaccins = Vaccins::where('id', $request->get('vaccine_id'))->first();
+            $vaccins->total_stock += $request->get('quantity');
+            $vaccins->total_stock_after_vac += $request->get('quantity');
+            $vaccins->save();
+        
+        return redirect('manage_stock')->with('success', 'Voorraad toegevoegd');
+    }
 }

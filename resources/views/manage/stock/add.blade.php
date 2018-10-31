@@ -15,23 +15,9 @@
     </div>
 
 
-    <form method="POST" action="{{ route('manage_stock.store') }}">
+    <form method="POST" action="{{ route('manage_stock.add') }}">
         <div class="form-group">
             @csrf
-            <label>In gebruik:</label>
-            <select name="isUsed" class="form-control">
-                <option value="1">Ja</option>
-                <option value="0">Neen</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>Gebruiker:</label>
-            <select name="user_id" class="form-control">
-                @foreach($users as $user)
-                    <option value="{{$user->id}}"> {{$user->name}} </option>
-                @endforeach
-            </select>
-        </div>
         <div class="form-group">
             <label>Vaccin:</label>
             <select name="vaccine_id" class="form-control">
@@ -44,12 +30,6 @@
             <label>Aantal:</label>
             <input type="text" class="form-control" name="quantity">
         </div>
-        <!--
-        <div class="form-group">
-            <label>Aantal na vaccinatie:</label>
-            <input type="text" class="form-control" name="quantityAfterVac">
-        </div>
-        -->
         <div class="form-group">
             <input type="submit" value="Toevoegen" class="btn btn-primary">
         </div>

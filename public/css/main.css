@@ -5,3 +5,7 @@ a.nav-link{
 a.nav-link:hover{
     color:#495057;
 }
+
+li.page-item.active{
+    background-color:#66686b;
+}
