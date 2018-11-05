@@ -34,7 +34,6 @@ class VaccinationsController extends Controller
     public function create()
     {
         $schools = Schools::all();
-       
         $vaccins = DB::table('vaccins')
                     ->select('vaccins.*', 'stock.quantity', 'stock.quantityAfterVac')
                     ->leftJoin('stock','vaccins.id', 'stock.vaccine_id')

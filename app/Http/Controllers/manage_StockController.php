@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Stock;
 use App\User;
 use App\Vaccins;
+use App\Rules\notHigherThanTotal;
 //use App\Http\Controllers\Controller;
 
 class manage_StockController extends Controller
@@ -55,11 +56,19 @@ class manage_StockController extends Controller
      */
     public function store(Request $request)
     {
+        $vaccins = Vaccins::where('id' , $request->get('vaccine_id'))->get();
+
         $request->validate([
             'isUsed' => 'required|integer',
             'user_id' => 'required',
             'vaccine_id' => 'required|integer',
-            'quantity' => 'required|integer',
+            'quantity' => [
+                'bail',
+                "required",
+                "numeric",
+                "integer",
+                new notHigherThanTotal($request->get('vaccine_id'))
+            ]
         ]);
         
         if(

@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Stock;
+use App\Vaccins;
+
 //use App\Http\Controllers\Controller;
 
 class StockController extends Controller
@@ -120,4 +123,34 @@ class StockController extends Controller
 
         return redirect('/stock')->with('success', 'Aanvraag verwijdert');
     }
+
+    
+    public function add_external_stock(Request $request, $id)
+    {
+
+        $vaccins = Vaccins::where([
+            ['id', $request->get('vaccine_id')]
+        ])
+        ->first();
+
+        $stock_lines = Stock::where([
+            ['user_id', Auth::id()],
+            ['vaccine_id', $request->get('vaccine_id')]
+        ])
+        ->first();
+        //dd($stock_lines);
+
+        $request->validate([
+           'quantity' => "required|integer|max:$stock_lines->quantity"
+        ]);
+
+        $stock_lines->quantity = $stock_lines->quantity -  $request->get('quantity');
+        $vaccins->total_stock_distributed = $vaccins->total_stock_distributed - $request->get('quantity');
+
+        $stock_lines->save();
+        $vaccins->save();
+
+        return redirect('/stock')->with('success', 'Voorraad afgestaan');
+    }
+    
 }

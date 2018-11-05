@@ -21,7 +21,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('stock', 'StockController');
     Route::get('/stock/edit/{id}', 'StockController@edit');
     Route::get('/stock/destroy/{id}', 'StockController@destroy')->name('stock.customdestroy');
-
+    Route::get('/stock/add_external/{id}', 'StockController@add_external_stock')->name('stock.add_external_stock');
 
     //routes for Requests controller
     Route::resource('requests', 'RequestsController');
