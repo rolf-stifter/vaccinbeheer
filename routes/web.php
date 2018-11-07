@@ -65,4 +65,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/users/edit/{id}', 'UsersController@edit');
     Route::get('/users/destroy/{id}', 'UsersController@destroy')->name('users.customdestroy');
 
+    //routes for Profile controller
+    Route::resource('profile', 'ProfileController');
+    Route::get('/profile/add_to_favorites/{id}', 'ProfileController@add_to_favorites')->name('profile.favorites');
+    Route::get('/profile/delete_favorite/{id}', 'ProfileController@delete_favorite')->name('profile.delete_fav');
 });

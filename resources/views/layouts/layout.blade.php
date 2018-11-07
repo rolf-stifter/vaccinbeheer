@@ -53,7 +53,7 @@
                                 {{ Auth::user()->name }}
                         </a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Profiel</a>
+                            <a class="dropdown-item" href="{{route('profile.index')}}">Profiel</a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

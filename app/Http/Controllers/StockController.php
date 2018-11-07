@@ -141,7 +141,7 @@ class StockController extends Controller
         //dd($stock_lines);
 
         $request->validate([
-           'quantity' => "required|integer|max:$stock_lines->quantity"
+           'quantity' => "required|integer|max:$stock_lines->quantityAfterVac"
         ]);
 
         $stock_lines->quantity = $stock_lines->quantity -  $request->get('quantity');

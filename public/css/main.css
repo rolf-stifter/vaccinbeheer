@@ -9,3 +9,17 @@ a.nav-link:hover{
 li.page-item.active{
     background-color:#66686b;
 }
+
+.wrapper{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1em;
+    margin-top: 50px;
+}
+
+@media only screen and (max-width:401px){
+    .wrapper{
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+}
