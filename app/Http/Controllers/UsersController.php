@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use App\User;
+use App\User_roles;
 
 class UsersController extends Controller
 {
@@ -16,6 +17,7 @@ class UsersController extends Controller
     public function index()
     {
         $users = User::all();
+        $user_roles = User_roles::all();
 
         return view('manage/users/index', compact('users'));
     }
@@ -28,7 +30,9 @@ class UsersController extends Controller
     public function create()
     {
         $users = User::all();
-        return view('manage/users/create', compact('users'));
+        $user_roles = User_roles::all();
+
+        return view('manage/users/create', compact('users', 'user_roles'));
     }
 
     /**
@@ -40,13 +44,15 @@ class UsersController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email'
+            'name' => 'required|unique:users,name',
+            'email' => 'required|unique:users,email',
+            'user_role' => 'required'
         ]);
 
         $users = new User([
             'name' => $request->get('name'),
-            'email' => $request->get('email')
+            'email' => $request->get('email'),
+            'user_role' => $request->get('user_role')
         ]);
         $users->save();
 
@@ -82,8 +88,9 @@ class UsersController extends Controller
     public function edit($id)
     {
         $users = User::findOrFail($id);
+        $user_roles = User_roles::all();
 
-        return view('manage/users/edit', compact('users'));
+        return view('manage/users/edit', compact('users', 'users_all'));
     }
 
     /**
@@ -98,11 +105,13 @@ class UsersController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
+            'user_role' => 'required'
         ]);
 
         $users = User::findOrFail($id);
             $users->name = $request->get('name');
             $users->email = $request->get('email');
+            $users->user_role = $request->get('user_role');
             $users->save();
 
         return redirect('/users')->with('success', 'Gebruiker is aangepast');

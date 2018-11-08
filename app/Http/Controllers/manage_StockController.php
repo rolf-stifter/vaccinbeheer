@@ -43,7 +43,7 @@ class manage_StockController extends Controller
     public function create()
     {
         $users = User::all();
-        $vaccins = Vaccins::all();
+        $vaccins = Vaccins::where('active', 1)->get();
         
         return view('manage/stock/create', compact('users', 'vaccins'));
     }
@@ -67,6 +67,7 @@ class manage_StockController extends Controller
                 "required",
                 "numeric",
                 "integer",
+                "min:0",
                 new notHigherThanTotal($request->get('vaccine_id'))
             ]
         ]);
@@ -113,7 +114,7 @@ class manage_StockController extends Controller
     public function edit($id)
     {
         $users = User::all();
-        $vaccins = Vaccins::all();
+        $vaccins = Vaccins::where('active', 1)->get();
         $stock_lines = Stock::find($id);
 
         return view('manage/stock/edit', compact('stock_lines', 'users', 'vaccins'));
@@ -132,7 +133,7 @@ class manage_StockController extends Controller
             'isUsed' => 'required|integer',
             'user_id' => 'required|exists:users,id',
             'vaccine_id' => 'required|integer',
-            'quantity' => 'required|integer',
+            'quantity' => 'required|integer|min:0',
         ]);
 
         $stock_lines = Stock::find($id);

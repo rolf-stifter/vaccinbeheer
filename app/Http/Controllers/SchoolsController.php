@@ -83,7 +83,7 @@ class SchoolsController extends Controller
             'name' => 'required',
         ]);
 
-        $schools = Stock::find($id);
+        $schools = Schools::find($id);
             $schools->name = $request->get('name');
             $schools->save();
 
@@ -99,9 +99,10 @@ class SchoolsController extends Controller
     public function destroy($id)
     {
         
-        $stock_lines = Stock::find($id);
-        $stock_lines->delete();
+        $schools = Schools::find($id);
+        $schools->active = 0;
+        $schools->save();
 
-        return redirect('/stock')->with('success', 'School verwijdert');
+        return redirect('/schools')->with('success', 'School verwijdert');
     }
 }

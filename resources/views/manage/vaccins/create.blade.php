@@ -29,7 +29,7 @@
             <input type="text" class="form-control" value="{{old('name')}}" name="name">
         </div>
         <div class="form-group">
-            <label>Product Type::</label>
+            <label>Product Type:</label>
             <input type="text" class="form-control" value="{{old('type')}}" name="type">
         </div>
         <div class="form-group">

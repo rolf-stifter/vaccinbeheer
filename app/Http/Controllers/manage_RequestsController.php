@@ -41,7 +41,7 @@ class manage_RequestsController extends Controller
      */
     public function create()
     {
-        $vaccins = Vaccins::all();
+        $vaccins = Vaccins::where('active', 1)->get();
         $users = User::all();
         $statusses = Status::all();
 
@@ -58,8 +58,7 @@ class manage_RequestsController extends Controller
     {
         $request->validate([
             'vaccine_id' => 'required|integer',
-            'quantity' => 'required|integer',
-            'request_date' => 'required|date',
+            'quantity' => 'required|integer|min:0',
             'user_id' => 'required|integer',
             'status_id' => 'required'
         ]);
@@ -68,8 +67,8 @@ class manage_RequestsController extends Controller
             'user_id' => Auth::id(),
             'vaccine_id' => $request->get('vaccine_id'),
             'quantity' => $request->get('quantity'),
-            'request_date' => $request->get('request_date'),
             'user_id' => $request->get('user_id'),
+            'request_date' => date('Y-m-d H:i:s'),
             'status_id' => $request->get('status_id')
         ]);
         
@@ -99,7 +98,7 @@ class manage_RequestsController extends Controller
 
         $requests = Requests::findOrFail($id);
         $statusses = Status::all();
-        $vaccins = Vaccins::all();
+        $vaccins = Vaccins::where('active', 1)->get();
         $users = User::all();
 
         return view('manage/requests/edit', compact('requests', 'statusses', 'vaccins', 'users'));
@@ -116,8 +115,7 @@ class manage_RequestsController extends Controller
     {
         $request->validate([
             'vaccine_id' => 'required|integer',
-            'quantity' => 'required|integer',
-            'request_date' => 'required|date',
+            'quantity' => 'required|integer|min:0',
             'user_id' => 'required|integer',
             'status_id' => 'required|integer'
         ]);
@@ -125,7 +123,6 @@ class manage_RequestsController extends Controller
         $requests = Requests::findOrFail($id);
             $requests->vaccine_id = $request->get('vaccine_id');
             $requests->quantity = $request->get('quantity');
-            $requests->request_date = $request->get('request_date');
             $requests->user_id = $request->get('user_id');
             $requests->status_id =  $request->get('status_id');
             $requests->save();

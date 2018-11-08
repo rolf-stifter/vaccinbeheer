@@ -31,10 +31,6 @@
             <input type="text" class="form-control" name="quantity" value={{$requests->quantity}}>
         </div>
         <div class="form-group">
-            <label>Datum aanvraag:</label>
-            <input type="date" class="form-control" name="request_date" value={{$requests->request_date}}>
-        </div>
-        <div class="form-group">
                 <label>Gebruiker:</label>
                 <select name="user_id" class="form-control">
                     @foreach($users as $user)

@@ -24,6 +24,9 @@
         <div class="form-group">
             <label>School:</label>
             <select name="school_id" class="form-control">
+                    @foreach ($favorite_schools as $school)
+                        <option value="{{$school->id}}" {{ old('school_id') == $school->id ? 'selected' : '' }}> {{ $school->name}}</option>
+                    @endforeach
                     @foreach($schools as $school)
                         <option value="{{$school->id}}" {{ old('school_id') == $school->id ? 'selected' : '' }}> {{ $school->name}}</option>
                     @endforeach

@@ -31,10 +31,6 @@
             <input type="text" class="form-control" name="quantity" value={{$requests->quantity}}>
         </div>
         <div class="form-group">
-            <label>Datum aanvraag:</label>
-            <input type="date" class="form-control" name="request_date" value={{$requests->request_date}}>
-        </div>
-        <div class="form-group">
             <input type="submit" value="Wijzig" class="btn btn-primary">
         </div>
     </form>

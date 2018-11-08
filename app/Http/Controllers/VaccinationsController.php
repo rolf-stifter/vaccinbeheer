@@ -33,13 +33,30 @@ class VaccinationsController extends Controller
      */
     public function create()
     {
-        $schools = Schools::all();
+        $schools = DB::table('schools')
+                        ->select('schools.id', 'schools.name')
+                        ->leftJoin('favorite_schools', function ($join){
+                            $join->on('schools.id', 'favorite_schools.school_id')
+                                  ->where('user_id', Auth::id());
+                            })
+                        ->whereNull('favorite_schools.school_id')
+                        ->get();
+
+        $favorite_schools = DB::table('favorite_schools')
+                                ->select('schools.id', 'schools.name')
+                                ->leftJoin('schools', 'schools.id', 'favorite_schools.school_id')
+                                ->where('user_id', Auth::id())
+                                ->get();
+
         $vaccins = DB::table('vaccins')
                     ->select('vaccins.*', 'stock.quantity', 'stock.quantityAfterVac')
                     ->leftJoin('stock','vaccins.id', 'stock.vaccine_id')
-                    ->where('user_id', Auth::id())
+                    ->where([
+                        ['user_id', Auth::id()],
+                        ['active', 1],
+                        ])
                     ->get();
-        return view('vaccinations/create', compact('schools', 'vaccins',  'stock_lines'));
+        return view('vaccinations/create', compact('schools', 'vaccins',  'stock_lines', 'favorite_schools'));
     }
 
     /**
@@ -57,12 +74,13 @@ class VaccinationsController extends Controller
                     ->where('user_id', Auth::id())
                     ->first();
 
+        $now = date('Y-m-d H:i:s');
         $request->validate([
-            'vaccination_date' => 'required',
+            'vaccination_date' => "required|after:$now",
             'school_id' => 'required',
             'school_class' => 'required',
             'vaccine_id' => 'required|integer',
-            'quantity' => "required|integer|max:$vaccins_user->quantity"
+            'quantity' => "required|integer|max:$vaccins_user->quantityAfterVac"
         ]);
 
         $vaccinations = new Vaccinations([
@@ -111,7 +129,7 @@ class VaccinationsController extends Controller
 
         $vaccinations = Vaccinations::find($id);
         $schools = Schools::all();
-        $vaccins = Vaccins::all();
+        $vaccins = Vaccins::where('active', 1)->get();
 
         if(Auth::id() != $vaccinations->user_id){
             return redirect('/vaccinations');
@@ -129,12 +147,13 @@ class VaccinationsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $now = date('Y-m-d H:i:s');
         $request->validate([
-            'vaccination_date' => 'required',
-            'school_id' => 'required',
+            'vaccination_date' => "required|after:$now",
+            'school_id' => 'required|integer',
             'school_class' => 'required',
             'vaccine_id' => 'required|integer',
-            'quantity' => 'required|integer'
+            'quantity' => 'required|integer|min:0'
         ]);
 
         $vaccinations = Vaccinations::find($id);

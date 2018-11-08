@@ -37,7 +37,7 @@ class manage_VaccinationsController extends Controller
     public function create()
     {
         $schools = Schools::all();
-        $vaccins = Vaccins::all();
+        $vaccins = Vaccins::where('active', 1)->get();
         $users = User::all();
 
         return view('manage/vaccinations/create', compact('schools', 'vaccins', 'users'));
@@ -51,13 +51,14 @@ class manage_VaccinationsController extends Controller
      */
     public function store(Request $request)
     {
+        $now = date('Y-m-d H:i:s');
         $request->validate([
-            'vaccination_date' => 'required',
+            'vaccination_date' => "required|after:$now",
             'school_id' => 'required',
             'school_class' => 'required',
             'vaccine_id' => 'required|integer',
             'user_id' => 'required|integer',
-            'quantity' => 'required|integer'
+            'quantity' => 'required|integer|min:0'
         ]);
 
         $vaccinations = new Vaccinations([
@@ -95,7 +96,7 @@ class manage_VaccinationsController extends Controller
 
         $vaccinations = Vaccinations::find($id);
         $schools = Schools::all();
-        $vaccins = Vaccins::all();
+        $vaccins = Vaccins::where('active', 1)->get();
         $users = User::all();
 
         return view('manage/vaccinations/edit', compact('vaccinations', 'vaccins', 'users', 'schools'));
@@ -110,13 +111,14 @@ class manage_VaccinationsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $now = date('Y-m-d H:i:s');
         $request->validate([
-            'vaccination_date' => 'required',
+            'vaccination_date' => "required|after:$now",
             'school_id' => 'required',
             'school_class' => 'required',
             'vaccine_id' => 'required|integer',
             'user_id' => 'required|integer',
-            'quantity' => 'required|integer'
+            'quantity' => 'required|integer|min:0'
         ]);
 
         $vaccinations = Vaccinations::find($id);

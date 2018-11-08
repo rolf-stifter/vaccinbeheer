@@ -25,29 +25,32 @@
     
             <div class="collapse navbar-collapse" id="navbarsExample05">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('stock.index')}}">Voorraad</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('requests.index')}}">Aanvragen</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('vaccinations.index')}}">Vaccinaties</a>
-                    </li>
-                    <hr class="" />
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                            Beheer
-                        </a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{{route('manage_stock.index')}}">Voorraad</a>
-                            <a class="dropdown-item" href="{{route('manage_requests.index')}}">Aanvragen</a>
-                            <a class="dropdown-item" href="{{route('manage_vaccinations.index')}}">Vaccinaties</a>
-                            <a class="dropdown-item" href="{{route('users.index')}}">Gebruikers</a>
-                            <a class="dropdown-item" href="{{route('vaccins.index')}}">Vaccins</a>
-                            <a class="dropdown-item" href="{{route('schools.index')}}">Scholen</a>
-                        </div>
-                    </li>
+                    @if(Auth::user()->user_role == 'Gebruiker' || Auth::user()->user_role == 'Beide')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('stock.index')}}">Voorraad</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('requests.index')}}">Aanvragen</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('vaccinations.index')}}">Vaccinaties</a>
+                        </li>
+                    @endif
+                    @if(Auth::user()->user_role == 'Beheerder' || Auth::user()->user_role == 'Beide')
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                                Beheer
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{{route('manage_stock.index')}}">Voorraad</a>
+                                <a class="dropdown-item" href="{{route('manage_requests.index')}}">Aanvragen</a>
+                                <a class="dropdown-item" href="{{route('manage_vaccinations.index')}}">Vaccinaties</a>
+                                <a class="dropdown-item" href="{{route('users.index')}}">Gebruikers</a>
+                                <a class="dropdown-item" href="{{route('vaccins.index')}}">Vaccins</a>
+                                <a class="dropdown-item" href="{{route('schools.index')}}">Scholen</a>
+                            </div>
+                        </li>
+                    @endif
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                                 {{ Auth::user()->name }}

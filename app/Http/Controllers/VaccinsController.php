@@ -40,7 +40,7 @@ class VaccinsController extends Controller
         $request->validate([
             'name' => 'required',
             'type' => 'required',
-            'minimum_amount' => 'required|integer',
+            'minimum_amount' => 'required|integer|min:0',
             'active' => 'required|integer'
         ]);
 
@@ -92,7 +92,7 @@ class VaccinsController extends Controller
         $request->validate([
             'name' => 'required',
             'type' => 'required',
-            'minimum_amount' => 'required|integer',
+            'minimum_amount' => 'required|integer|min:0',
             'active' => 'required|integer'
         ]);
 
@@ -116,8 +116,18 @@ class VaccinsController extends Controller
     {
         
         $vaccins = Vaccins::find($id);
-        $vaccins->delete();
+        $vaccins->active = 0;
+        $vaccins->save();
 
         return redirect('/vaccins')->with('success', 'Vaccin verwijdert');
+    }
+
+    public function activate_vaccin($id)
+    {
+        $vaccins = Vaccins::find($id);
+        $vaccins->active = 1;
+        $vaccins->save();
+
+        return redirect('/vaccins')->with('success', 'Vaccin terug in gebruik');
     }
 }

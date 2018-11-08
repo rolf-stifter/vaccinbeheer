@@ -20,6 +20,7 @@
                 <tr>
                     <th scope="col">Naam</th>
                     <th scope="col">Email</th>
+                    <th scope="col">Type</th>
                     <th colspan="2" scope="col"><a href="{{ route('users.create')}}"><i style="color:#fff;" class="fas fa-plus"></i></th>
                 </tr>
             </thead>
@@ -29,6 +30,7 @@
                 <tr>
                     <td>{{$user->name}}</td>
                     <td>{{$user->email}}</td>
+                    <td>{{$user->user_role}}</td>
                     <td>
                         <a href="{{ route('users.edit', $user->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a>
                         <button class="btn btn-danger" onclick="delete_data('{{route('users.customdestroy', $user->id)}}')"><i class="fas fa-trash-alt"></i></button>

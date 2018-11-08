@@ -23,9 +23,17 @@
             <input type="text" class="form-control" name="name" value="{{$users->name}}">
         </div>
         <div class="form-group">
-                <label>Email:</label>
-                <input type="text" class="form-control" name="email" value="{{$users->email}}">
-            </div>
+            <label>Email:</label>
+            <input type="text" class="form-control" name="email" value="{{$users->email}}">
+        </div>
+        <div class="form-group">
+            <label>Gebruikers type:</label>
+            <select name="user_role" class="form-control">
+                @foreach($user_roles as $role)
+                    <option value="{{ $role->name }}"  {{ $users->user_role == $role->name? 'selected': ''}}> {{ $role->name }} </option>
+                @endforeach
+            </select>
+        </div>
         <div class="form-group">
             <input type="submit" value="Wijzig" class="btn btn-primary">
         </div>

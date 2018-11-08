@@ -29,19 +29,23 @@
             </thead>
 
     <tbody>
-            @foreach($vaccins as $vaccins)
+            @foreach($vaccins as $vaccin)
                     <tr>
-                        @if($vaccins->active == 1)
+                        @if($vaccin->active == 1)
                             <td>&#10004;</td>
                         @else
                             <td>&#10060;</td>
                         @endif
-                        <td>{{ $vaccins->name}}</td>
-                        <td>{{ $vaccins->type}}</td>
-                        <td>{{ $vaccins->minimum_amount}}</td>
+                        <td>{{ $vaccin->name}}</td>
+                        <td>{{ $vaccin->type}}</td>
+                        <td>{{ $vaccin->minimum_amount}}</td>
                         <td>
-                            <a href="{{ route('vaccins.edit', $vaccins->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a>
-                            <button class="btn btn-danger" onclick="delete_data('{{route('vaccins.customdestroy', $vaccins->id)}}')"><i class="fas fa-trash-alt"></i></button>
+                            <a href="{{ route('vaccins.edit', $vaccin->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a>
+                        @if($vaccin->active == 1)
+                            <button class="btn btn-danger" onclick="delete_data('{{route('vaccins.customdestroy', $vaccin->id)}}')"><i class="fas fa-trash-alt"></i></button>
+                        @else
+                            <a href="{{ route('vaccins.activate', $vaccin->id)}}" class="btn btn-success"><i class="fas fa-play"></i></a>
+                        @endif
                         </td>
                     </tr>
             @endforeach
@@ -57,7 +61,7 @@ function delete_data(url){
 
     swal({
         title: 'Bent u zeker?',
-        text: "Dit kan niet meer ongedaan gemaakt worden!",
+        text: "Dit product gaat niet meer gebruikt kunnen worden",
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#f44242',

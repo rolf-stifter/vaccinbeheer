@@ -32,7 +32,7 @@ class RequestsController extends Controller
      */
     public function create()
     {
-        $vaccins = Vaccins::all();
+        $vaccins = Vaccins::where('active', 1)->get();
         return view('requests/create', compact('vaccins'));
     }
 
@@ -46,15 +46,14 @@ class RequestsController extends Controller
     {
         $request->validate([
             'vaccine_id' => 'required|integer',
-            'quantity' => 'required|integer',
-            'request_date' => 'required|date',
+            'quantity' => 'required|integer|min:0',
         ]);
 
         $request = new Requests([
             'user_id' => Auth::id(),
             'vaccine_id' => $request->get('vaccine_id'),
             'quantity' => $request->get('quantity'),
-            'request_date' => $request->get('request_date'),
+            'request_date' => date('Y-m-d H:i:s'),
             'status_id' => 1
         ]);
         
@@ -83,7 +82,7 @@ class RequestsController extends Controller
     {
         $statuses = Status::all();
         $requests = Requests::findOrFail($id);
-        $vaccins = Vaccins::all();
+        $vaccins = Vaccins::where('active', 1)->get();
 
         if(Auth::id() != $requests->user_id){
             return redirect('/requests');
@@ -103,14 +102,12 @@ class RequestsController extends Controller
     {
         $request->validate([
             'vaccine_id' => 'required|integer',
-            'quantity' => 'required|integer',
-            'request_date' => 'required|date',
+            'quantity' => 'required|integer|min:0',
         ]);
 
         $requests = Requests::find($id);
             $requests->vaccine_id = $request->get('vaccine_id');
             $requests->quantity = $request->get('quantity');
-            $requests->request_date = $request->get('request_date');  
             $requests->save();
 
         return redirect('/requests')->with('success', 'Aanvraag aangepast');
