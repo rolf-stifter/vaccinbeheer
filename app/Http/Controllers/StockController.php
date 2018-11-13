@@ -18,7 +18,7 @@ class StockController extends Controller
         Stock::calc_user();
 
         $stock_lines = Stock::with('vaccins')->get();
-
+        //dd($stock_lines);
         return view('stock/index', compact('stock_lines'));
     }
 

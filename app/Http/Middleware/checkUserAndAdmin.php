@@ -17,9 +17,9 @@ class checkUserAndAdmin
     public function handle($request, Closure $next)
     {
 
-        if(Auth::user()->user_role == 'Beide'){
+        if(Auth::user()->user_roles_id == '3'){
             return $next($request);
-        } elseif(Auth::user()->user_role == 'Beheerder') {
+        } elseif(Auth::user()->user_roles_id == '2') {
             redirect('/manage_stock');
         } else {
             redirect('/stock');

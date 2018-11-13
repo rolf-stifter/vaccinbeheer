@@ -16,7 +16,7 @@ class checkAdmin
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::user()->user_role == 'Beheerder' || Auth::user()->user_role == 'Beide'){
+        if(Auth::user()->user_roles_id == '2' || Auth::user()->user_roles_id == '3'){
             return $next($request);
         } else {
             return redirect('/stock');

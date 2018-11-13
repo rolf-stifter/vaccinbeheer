@@ -30,7 +30,7 @@
                 <tr>
                     <td>{{$user->name}}</td>
                     <td>{{$user->email}}</td>
-                    <td>{{$user->user_role}}</td>
+                    <td>{{$user->user_roles->name}}</td>
                     <td>
                         <a href="{{ route('users.edit', $user->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a>
                         <button class="btn btn-danger" onclick="delete_data('{{route('users.customdestroy', $user->id)}}')"><i class="fas fa-trash-alt"></i></button>

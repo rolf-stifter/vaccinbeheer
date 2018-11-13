@@ -28,9 +28,9 @@
         </div>
         <div class="form-group">
             <label>Gebruikers type:</label>
-            <select name="user_role" class="form-control">
+            <select name="user_roles_id" class="form-control">
                 @foreach($user_roles as $role)
-                    <option value="{{ $role->name }}"  {{ $users->user_role == $role->name? 'selected': ''}}> {{ $role->name }} </option>
+                    <option value="{{ $role->id }}"  {{ $users->user_roles_id == $role->id? 'selected': ''}}> {{ $role->name }} </option>
                 @endforeach
             </select>
         </div>

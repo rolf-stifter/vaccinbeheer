@@ -25,7 +25,7 @@
     
             <div class="collapse navbar-collapse" id="navbarsExample05">
                 <ul class="navbar-nav ml-auto">
-                    @if(Auth::user()->user_role == 'Gebruiker' || Auth::user()->user_role == 'Beide')
+                    @if(Auth::user()->user_roles_id == '1' || Auth::user()->user_roles_id == '3')
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('stock.index')}}">Voorraad</a>
                         </li>
@@ -36,7 +36,7 @@
                             <a class="nav-link" href="{{route('vaccinations.index')}}">Vaccinaties</a>
                         </li>
                     @endif
-                    @if(Auth::user()->user_role == 'Beheerder' || Auth::user()->user_role == 'Beide')
+                    @if(Auth::user()->user_roles_id == '2' || Auth::user()->user_roles_id == '3')
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                                 Beheer

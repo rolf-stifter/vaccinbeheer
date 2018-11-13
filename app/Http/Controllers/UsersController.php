@@ -16,10 +16,10 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        $user_roles = User_roles::all();
-
-        return view('manage/users/index', compact('users'));
+        $users = User::with('user_roles')->get();
+        //$user_roles = User_roles::all();
+        //dd($users);
+        return view('manage/users/index', compact('users', 'user_roles'));
     }
 
     /**
@@ -46,13 +46,13 @@ class UsersController extends Controller
         $request->validate([
             'name' => 'required|unique:users,name',
             'email' => 'required|unique:users,email',
-            'user_role' => 'required'
+            'user_roles_id' => 'required|integer'
         ]);
 
         $users = new User([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
-            'user_role' => $request->get('user_role')
+            'user_roles_id' => $request->get('user_roles_id')
         ]);
         $users->save();
 
@@ -90,7 +90,7 @@ class UsersController extends Controller
         $users = User::findOrFail($id);
         $user_roles = User_roles::all();
 
-        return view('manage/users/edit', compact('users', 'users_all'));
+        return view('manage/users/edit', compact('users', 'user_roles'));
     }
 
     /**
@@ -105,13 +105,13 @@ class UsersController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
-            'user_role' => 'required'
+            'user_roles_id' => 'required|integer'
         ]);
 
         $users = User::findOrFail($id);
             $users->name = $request->get('name');
             $users->email = $request->get('email');
-            $users->user_role = $request->get('user_role');
+            $users->user_roles_id = $request->get('user_roles_id');
             $users->save();
 
         return redirect('/users')->with('success', 'Gebruiker is aangepast');
